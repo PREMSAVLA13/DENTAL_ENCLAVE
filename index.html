@@ -1621,7 +1621,7 @@
        SERVICES — Full-Width USP Feature Wall
     ══════════════════════════════════════ */
         #services {
-            background: var(--dark);
+            background: var(--pg3);
             padding: 0;
             overflow: hidden;
             position: relative;
@@ -1635,7 +1635,7 @@
             right: -200px;
             width: 700px;
             height: 700px;
-            background: radial-gradient(circle, rgba(212, 118, 42, .10) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(168, 212, 168, .35) 0%, transparent 70%);
             pointer-events: none;
             z-index: 0;
         }
@@ -1647,7 +1647,7 @@
             left: -150px;
             width: 500px;
             height: 500px;
-            background: radial-gradient(circle, rgba(245, 192, 154, .07) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(245, 192, 154, .18) 0%, transparent 70%);
             pointer-events: none;
             z-index: 0;
         }
@@ -1665,19 +1665,19 @@
         }
 
         .svc-top-band .sec-title {
-            color: white;
+            color: var(--dark);
         }
 
         .svc-top-band .eyebrow {
-            color: var(--po);
+            color: var(--po4);
         }
 
         .svc-top-band .eyebrow::before {
-            background: var(--po);
+            background: var(--po4);
         }
 
         .svc-top-band .sec-sub {
-            color: rgba(255, 255, 255, .38);
+            color: var(--grey);
             max-width: 340px;
         }
 
@@ -1689,14 +1689,14 @@
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 1px;
-            background: rgba(255, 255, 255, .05);
-            border-top: 1px solid rgba(255, 255, 255, .06);
-            border-bottom: 1px solid rgba(255, 255, 255, .06);
+            background: rgba(61, 122, 61, .12);
+            border-top: 1px solid rgba(61, 122, 61, .15);
+            border-bottom: 1px solid rgba(61, 122, 61, .15);
             margin-top: 48px;
         }
 
         .svc-fw-card {
-            background: var(--dark);
+            background: var(--pg3);
             padding: 40px 32px 36px;
             position: relative;
             cursor: none;
@@ -1706,12 +1706,12 @@
 
         /* Vertical dividers between cards */
         .svc-fw-card+.svc-fw-card {
-            border-left: 1px solid rgba(255, 255, 255, .05);
+            border-left: 1px solid rgba(61, 122, 61, .12);
         }
 
         /* Horizontal divider for bottom row */
         .svc-fw-card:nth-child(n+5) {
-            border-top: 1px solid rgba(255, 255, 255, .05);
+            border-top: 1px solid rgba(61, 122, 61, .12);
         }
 
         /* Hover fill from bottom */
@@ -1719,7 +1719,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(160deg, rgba(212, 118, 42, .14) 0%, rgba(212, 118, 42, .06) 100%);
+            background: linear-gradient(160deg, rgba(168, 212, 168, .45) 0%, rgba(168, 212, 168, .18) 100%);
             opacity: 0;
             transition: opacity .45s var(--ease);
             z-index: 0;
@@ -1757,7 +1757,7 @@
             font-family: 'Cormorant Garamond', serif;
             font-size: 4rem;
             font-weight: 300;
-            color: rgba(255, 255, 255, .04);
+            color: rgba(61, 122, 61, .1);
             line-height: 1;
             position: absolute;
             top: -8px;
@@ -1769,15 +1769,15 @@
         }
 
         .svc-fw-card:hover .svc-fw-num {
-            color: rgba(200, 230, 200, .08);
+            color: rgba(61, 122, 61, .18);
         }
 
         .svc-fw-ico {
             font-size: 2rem;
             width: 56px;
             height: 56px;
-            background: rgba(255, 255, 255, .04);
-            border: 1px solid rgba(255, 255, 255, .07);
+            background: rgba(61, 122, 61, .1);
+            border: 1px solid rgba(61, 122, 61, .18);
             border-radius: 16px;
             display: flex;
             align-items: center;
@@ -1787,8 +1787,8 @@
         }
 
         .svc-fw-card:hover .svc-fw-ico {
-            background: rgba(212, 118, 42, .25);
-            border-color: rgba(212, 118, 42, .25);
+            background: rgba(212, 118, 42, .18);
+            border-color: rgba(212, 118, 42, .3);
             transform: scale(1.08) rotate(-3deg);
         }
 
@@ -1796,26 +1796,26 @@
             font-family: 'Cormorant Garamond', serif;
             font-size: 1.45rem;
             font-weight: 400;
-            color: rgba(255, 255, 255, .75);
+            color: var(--dark);
             line-height: 1.15;
             margin-bottom: 12px;
             transition: color .3s;
         }
 
         .svc-fw-card:hover .svc-fw-name {
-            color: white;
+            color: var(--pg5);
         }
 
         .svc-fw-desc {
             font-size: .78rem;
-            color: rgba(255, 255, 255, .32);
+            color: var(--grey);
             line-height: 1.75;
             margin-bottom: 20px;
             transition: color .3s;
         }
 
         .svc-fw-card:hover .svc-fw-desc {
-            color: rgba(255, 255, 255, .52);
+            color: var(--dark);
         }
 
         /* Tag pills */
@@ -1831,17 +1831,17 @@
             font-weight: 700;
             letter-spacing: .08em;
             text-transform: uppercase;
-            color: rgba(200, 230, 200, .5);
-            background: rgba(200, 230, 200, .06);
-            border: 1px solid rgba(200, 230, 200, .1);
+            color: var(--pg4);
+            background: rgba(61, 122, 61, .1);
+            border: 1px solid rgba(61, 122, 61, .2);
             padding: 3px 9px;
             border-radius: 20px;
             transition: background .3s, color .3s;
         }
 
         .svc-fw-card:hover .svc-fw-tag {
-            background: rgba(200, 230, 200, .12);
-            color: rgba(200, 230, 200, .8);
+            background: rgba(61, 122, 61, .18);
+            color: var(--pg5);
         }
 
         /* Expandable detail on hover */
@@ -1856,7 +1856,7 @@
         }
 
         .svc-fw-steps {
-            border-top: 1px solid rgba(255, 255, 255, .06);
+            border-top: 1px solid rgba(61, 122, 61, .15);
             padding-top: 16px;
             display: flex;
             flex-direction: column;
@@ -1869,7 +1869,7 @@
             align-items: flex-start;
             gap: 10px;
             font-size: .75rem;
-            color: rgba(255, 255, 255, .38);
+            color: var(--grey);
             line-height: 1.5;
         }
 
@@ -1877,14 +1877,14 @@
             width: 18px;
             height: 18px;
             border-radius: 50%;
-            background: rgba(212, 118, 42, .3);
-            border: 1px solid rgba(200, 230, 200, .15);
+            background: rgba(212, 118, 42, .2);
+            border: 1px solid rgba(61, 122, 61, .25);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: .55rem;
             font-weight: 700;
-            color: var(--po);
+            color: var(--po4);
             flex-shrink: 0;
             margin-top: 1px;
         }
@@ -1897,21 +1897,21 @@
             font-weight: 700;
             letter-spacing: .05em;
             text-transform: uppercase;
-            color: var(--po);
+            color: var(--po4);
             text-decoration: none;
             transition: gap .25s, color .25s;
         }
 
         .svc-fw-cta:hover {
             gap: 12px;
-            color: var(--pg2);
+            color: var(--pg4);
         }
 
         .svc-fw-cta .arr {
             width: 22px;
             height: 22px;
             border-radius: 50%;
-            border: 1px solid rgba(200, 230, 200, .25);
+            border: 1px solid rgba(61, 122, 61, .3);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1936,8 +1936,8 @@
         }
 
         .svc-usp-card {
-            background: rgba(255, 255, 255, .025);
-            border: 1px solid rgba(255, 255, 255, .06);
+            background: rgba(255, 255, 255, .6);
+            border: 1px solid rgba(61, 122, 61, .15);
             border-radius: 16px;
             padding: 28px 24px;
             display: flex;
@@ -1947,8 +1947,8 @@
         }
 
         .svc-usp-card:hover {
-            background: rgba(255, 255, 255, .05);
-            border-color: rgba(200, 230, 200, .12);
+            background: rgba(255, 255, 255, .9);
+            border-color: rgba(61, 122, 61, .3);
         }
 
         .svc-usp-ico {
@@ -1960,14 +1960,14 @@
         .svc-usp-title {
             font-size: .84rem;
             font-weight: 700;
-            color: white;
+            color: var(--dark);
             margin-bottom: 5px;
             letter-spacing: .01em;
         }
 
         .svc-usp-sub {
             font-size: .73rem;
-            color: rgba(255, 255, 255, .35);
+            color: var(--grey);
             line-height: 1.65;
         }
 
@@ -2190,7 +2190,7 @@
        REVIEWS — Immersive attraction design
     ══════════════════════════════════════ */
         #reviews {
-            background: var(--dark);
+            background: var(--cream);
             padding: 120px 64px;
             position: relative;
             overflow: hidden;
@@ -2203,20 +2203,20 @@
             right: -200px;
             width: 700px;
             height: 700px;
-            background: radial-gradient(circle, rgba(200, 230, 200, .05), transparent 65%);
+            background: radial-gradient(circle, rgba(245, 192, 154, .15), transparent 65%);
             pointer-events: none;
         }
 
         #reviews .eyebrow {
-            color: var(--po);
+            color: var(--po4);
         }
 
         #reviews .eyebrow::before {
-            background: var(--po);
+            background: var(--po4);
         }
 
         #reviews .sec-title {
-            color: white;
+            color: var(--dark);
         }
 
         /* Hero banner */
@@ -2230,8 +2230,8 @@
         }
 
         .rev-hero-left {
-            background: linear-gradient(135deg, rgba(212, 118, 42, .3), rgba(212, 118, 42, .1));
-            border: 1px solid rgba(200, 230, 200, .12);
+            background: linear-gradient(135deg, rgba(245, 192, 154, .35), rgba(200, 230, 200, .25));
+            border: 1px solid rgba(212, 118, 42, .2);
             padding: 48px 52px;
             display: flex;
             flex-direction: column;
@@ -2250,13 +2250,13 @@
             font-size: 5.5rem;
             font-weight: 300;
             line-height: 1;
-            color: white;
+            color: var(--dark);
         }
 
         .rev-score-denom {
             font-family: 'Cormorant Garamond', serif;
             font-size: 2rem;
-            color: rgba(255, 255, 255, .35);
+            color: var(--grey);
         }
 
         .rev-stars-lg {
@@ -2268,11 +2268,11 @@
 
         .rev-count-line {
             font-size: .8rem;
-            color: rgba(255, 255, 255, .4);
+            color: var(--grey);
         }
 
         .rev-count-line b {
-            color: var(--po);
+            color: var(--po4);
         }
 
         .rev-platforms {
@@ -2285,13 +2285,13 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 255, 255, .06);
-            border: 1px solid rgba(255, 255, 255, .08);
+            background: rgba(255, 255, 255, .7);
+            border: 1px solid rgba(61, 122, 61, .15);
             border-radius: 30px;
             padding: 7px 16px;
             font-size: .72rem;
             font-weight: 600;
-            color: rgba(255, 255, 255, .6);
+            color: var(--grey);
         }
 
         .rev-plat-g {
@@ -2305,8 +2305,8 @@
         }
 
         .rev-hero-right {
-            background: rgba(255, 255, 255, .03);
-            border: 1px solid rgba(255, 255, 255, .07);
+            background: rgba(255, 255, 255, .8);
+            border: 1px solid rgba(61, 122, 61, .12);
             border-left: none;
             padding: 48px 52px;
             display: flex;
@@ -3194,9 +3194,9 @@
         /* ══════════════════════════════════════
        DOCTOR
     ══════════════════════════════════════ */
-        /* ══ DOCTOR — Premium Dark Redesign ══ */
+        /* ══ DOCTOR — Premium Light Redesign ══ */
         #doctor {
-            background: var(--dark);
+            background: var(--cream);
             padding: 0;
             display: grid;
             grid-template-columns: 1fr 1.08fr;
@@ -3267,10 +3267,10 @@
         }
 
         .doc-stat {
-            background: rgba(255, 255, 255, .07);
+            background: rgba(255, 255, 255, .75);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, .12);
+            border: 1px solid rgba(255, 255, 255, .5);
             border-radius: 14px;
             padding: 14px 16px;
             text-align: center;
@@ -3289,7 +3289,7 @@
             font-size: .6rem;
             letter-spacing: .1em;
             text-transform: uppercase;
-            color: rgba(255, 255, 255, .45);
+            color: var(--grey);
             font-weight: 600;
         }
 
@@ -3360,7 +3360,7 @@
             font-size: clamp(2.4rem, 3.5vw, 4rem);
             font-weight: 300;
             line-height: 1.0;
-            color: white;
+            color: var(--dark);
             margin-bottom: 10px;
         }
 
@@ -3368,14 +3368,14 @@
             font-size: .72rem;
             font-weight: 700;
             letter-spacing: .12em;
-            color: rgba(255, 255, 255, .35);
+            color: var(--grey);
             text-transform: uppercase;
             margin-bottom: 28px;
         }
 
         .doc-bio {
             font-size: .88rem;
-            color: rgba(255, 255, 255, .55);
+            color: var(--grey);
             line-height: 1.95;
             margin-bottom: 36px;
             max-width: 460px;
@@ -3396,17 +3396,17 @@
             align-items: flex-start;
             gap: 12px;
             font-size: .8rem;
-            color: rgba(255, 255, 255, .65);
-            background: rgba(255, 255, 255, .04);
-            border: 1px solid rgba(255, 255, 255, .07);
+            color: var(--grey);
+            background: rgba(255, 255, 255, .8);
+            border: 1px solid rgba(61, 122, 61, .12);
             border-radius: 12px;
             padding: 12px 14px;
             transition: background .2s, border-color .2s;
         }
 
         .dq-item:hover {
-            background: rgba(212, 118, 42, .08);
-            border-color: rgba(212, 118, 42, .22);
+            background: rgba(255, 255, 255, 1);
+            border-color: rgba(212, 118, 42, .3);
         }
 
         .dq-icon {
@@ -3443,14 +3443,14 @@
         }
 
         .dtag-o {
-            background: rgba(255, 255, 255, .06);
-            color: rgba(255, 255, 255, .55);
-            border: 1px solid rgba(255, 255, 255, .1);
+            background: rgba(61, 122, 61, .08);
+            color: var(--grey);
+            border: 1px solid rgba(61, 122, 61, .15);
         }
 
         .dtag-o:hover {
-            background: rgba(255, 255, 255, .1);
-            color: white;
+            background: rgba(61, 122, 61, .15);
+            color: var(--dark);
         }
 
         /* Contact row */
@@ -3465,12 +3465,12 @@
             align-items: center;
             gap: 8px;
             padding: 11px 20px;
-            background: rgba(255, 255, 255, .06);
+            background: rgba(255, 255, 255, .8);
             border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, .1);
+            border: 1px solid rgba(61, 122, 61, .2);
             font-size: .8rem;
             font-weight: 500;
-            color: rgba(255, 255, 255, .75);
+            color: var(--dark);
             transition: all .25s;
         }
 
@@ -3481,15 +3481,15 @@
         }
 
         .dcontact:first-child:hover {
-            background: var(--dark2);
+            background: var(--dark);
             border-color: var(--po4);
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(212, 118, 42, .3);
         }
 
         .dcontact:hover {
-            background: rgba(255, 255, 255, .12);
-            border-color: rgba(255, 255, 255, .2);
+            background: rgba(255, 255, 255, 1);
+            border-color: rgba(61, 122, 61, .35);
             color: white;
         }
 
@@ -3543,7 +3543,7 @@
        BOOKING + VISIT — Cleaner 2-col
     ══════════════════════════════════════ */
         #contact {
-            background: var(--dark2);
+            background: var(--pg3);
             padding: 120px 64px;
             position: relative;
             overflow: hidden;
@@ -3556,7 +3556,7 @@
             right: -200px;
             width: 600px;
             height: 600px;
-            background: radial-gradient(circle, rgba(200, 230, 200, .07), transparent 70%);
+            background: radial-gradient(circle, rgba(168, 212, 168, .25), transparent 70%);
             pointer-events: none;
         }
 
@@ -3567,7 +3567,7 @@
             left: -100px;
             width: 450px;
             height: 450px;
-            background: radial-gradient(circle, rgba(245, 192, 154, .07), transparent 70%);
+            background: radial-gradient(circle, rgba(245, 192, 154, .15), transparent 70%);
             pointer-events: none;
         }
 
@@ -5595,7 +5595,8 @@
             <div class="doc-contacts">
                 <a href="tel:9167310997" class="dcontact">📞 9167310997</a>
                 <a href="https://wa.me/919167310997" target="_blank" class="dcontact">💬 WhatsApp</a>
-                <a href="https://www.practo.com/mumbai/doctor/kanchan-koli-dentist" target="_blank" class="dcontact">🏥
+                <a href="https://www.practo.com/mumbai/doctor/dr-vishal-patil-1-dentist-1" target="_blank"
+                    class="dcontact">🏥
                     Practo</a>
             </div>
         </div>
@@ -5692,7 +5693,7 @@
                         </a>
 
                         <!-- Practo -->
-                        <a href="https://www.practo.com/mumbai/doctor/kanchan-koli-dentist" target="_blank"
+                        <a href="https://www.practo.com/mumbai/doctor/dr-vishal-patil-1-dentist-1" target="_blank"
                             class="bk-opt bk-opt-practo">
                             <div class="bk-opt-ico">
                                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
