@@ -88,6 +88,37 @@
             cursor: none;
         }
 
+        /* ── NAV LOGO ── */
+        .nav-logo-wrap {
+            padding: 0;
+            background: none;
+            box-shadow: none;
+        }
+
+        .nav-logo-wrap img {
+            height: 38px;
+            width: auto;
+            display: block;
+            transition: opacity .3s;
+        }
+
+        .nav-logo-hero {
+            display: block;
+        }
+
+        .nav-logo-solid {
+            display: none !important;
+        }
+
+        nav.solid .nav-logo-hero {
+            display: none !important;
+        }
+
+        nav.solid .nav-logo-solid {
+            display: block !important;
+            mix-blend-mode: multiply;
+        }
+
         /* ── CURSOR ── */
         #cur-dot {
             position: fixed;
@@ -320,15 +351,19 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 20px 64px;
-            transition: background .45s, backdrop-filter .45s, box-shadow .45s, padding .3s;
+            padding: 14px 64px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(28px) saturate(200%);
+            -webkit-backdrop-filter: blur(28px) saturate(200%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 32px rgba(0, 0, 0, 0.08);
+            transition: background .4s, box-shadow .4s, padding .3s;
         }
 
         nav.solid {
-            background: rgba(247, 253, 245, .93);
-            backdrop-filter: blur(28px);
-            box-shadow: 0 1px 0 rgba(61, 122, 61, .08);
-            padding: 14px 64px;
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 2px 40px rgba(0, 0, 0, 0.1);
+            padding: 12px 64px;
         }
 
         .nav-logo {
@@ -386,13 +421,13 @@
             font-weight: 500;
             letter-spacing: .08em;
             text-transform: uppercase;
-            color: rgba(255, 255, 255, .75);
+            color: rgba(255, 255, 255, 0.9);
             position: relative;
             transition: color .2s;
         }
 
         nav.solid .nav-links a {
-            color: var(--grey);
+            color: rgba(255, 255, 255, 0.9);
         }
 
         .nav-links a::after {
@@ -433,62 +468,299 @@
             box-shadow: 0 6px 20px rgba(61, 122, 61, .28);
         }
 
+        /* ── HAMBURGER BUTTON ── */
         .nav-ham {
             display: none;
             flex-direction: column;
-            gap: 5px;
-            padding: 4px;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: background .25s, border-color .25s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        nav.solid .nav-ham {
+            background: rgba(61, 122, 61, 0.1);
+            border-color: rgba(61, 122, 61, 0.25);
+        }
+
+        .nav-ham:hover {
+            background: rgba(255, 255, 255, 0.22);
+        }
+
+        nav.solid .nav-ham:hover {
+            background: rgba(61, 122, 61, 0.18);
         }
 
         .nav-ham span {
             display: block;
-            width: 22px;
+            width: 18px;
             height: 1.5px;
-            background: var(--dark);
+            background: white;
             border-radius: 2px;
-            transition: all .3s;
+            position: absolute;
+            transition: transform .35s var(--ease), opacity .25s, width .3s var(--ease);
         }
 
+        nav.solid .nav-ham span {
+            background: var(--dark);
+        }
+
+        .nav-ham span:nth-child(1) {
+            transform: translateY(-5px);
+        }
+
+        .nav-ham span:nth-child(2) {
+            transform: translateY(0);
+            width: 12px;
+            margin-left: -3px;
+        }
+
+        .nav-ham span:nth-child(3) {
+            transform: translateY(5px);
+        }
+
+        /* Animated → X when menu open */
+        .nav-ham.active span:nth-child(1) {
+            transform: translateY(0) rotate(45deg);
+            width: 18px;
+        }
+
+        .nav-ham.active span:nth-child(2) {
+            opacity: 0;
+            transform: translateX(-8px);
+        }
+
+        .nav-ham.active span:nth-child(3) {
+            transform: translateY(0) rotate(-45deg);
+            width: 18px;
+        }
+
+        /* ── MOBILE MENU OVERLAY ── */
         #mob-menu {
             position: fixed;
             inset: 0;
             z-index: 700;
-            background: var(--cream);
+            background: var(--dark);
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
-            gap: 28px;
+            padding: 0 40px 40px;
             opacity: 0;
             visibility: hidden;
-            transition: opacity .4s var(--ease), visibility .4s;
+            clip-path: inset(0 0 100% 0);
+            transition: opacity .5s var(--ease), visibility .5s, clip-path .55s var(--ease);
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        #mob-menu::before {
+            content: '';
+            position: absolute;
+            top: -120px;
+            right: -120px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(61, 122, 61, .18) 0%, transparent 65%);
+            pointer-events: none;
+        }
+
+        #mob-menu::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            left: -80px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(245, 192, 154, .1) 0%, transparent 65%);
             pointer-events: none;
         }
 
         #mob-menu.open {
             opacity: 1;
             visibility: visible;
+            clip-path: inset(0 0 0% 0);
             pointer-events: all;
         }
 
-        #mob-menu a {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.6rem;
-            color: var(--dark);
-            font-weight: 400;
-            transition: color .2s;
+        /* Top bar inside menu */
+        .mob-menu-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0 48px;
+            position: relative;
+            z-index: 2;
         }
 
-        #mob-menu a:hover {
-            color: var(--pg4);
+        .mob-menu-brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, .5);
+            letter-spacing: .08em;
+            text-transform: uppercase;
         }
 
         #mob-close {
-            position: absolute;
-            top: 24px;
-            right: 28px;
-            font-size: 1.6rem;
-            cursor: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, .15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, .6);
+            font-size: .9rem;
+            cursor: pointer;
+            transition: all .25s;
+            background: none;
+            position: static;
+        }
+
+        #mob-close:hover {
+            border-color: var(--pg);
+            color: var(--pg);
+            background: rgba(61, 122, 61, .1);
+        }
+
+        /* Nav links */
+        .mob-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .mob-nav-links a {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.4rem, 9vw, 3.8rem);
+            font-weight: 300;
+            color: rgba(255, 255, 255, .35);
+            line-height: 1.2;
+            letter-spacing: -.01em;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, .05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: color .3s var(--ease), padding-left .3s var(--ease);
+            text-decoration: none;
+            opacity: 0;
+            transform: translateY(24px);
+            transition: color .3s, padding-left .3s, opacity .5s var(--ease), transform .5s var(--ease);
+        }
+
+        #mob-menu.open .mob-nav-links a:nth-child(1) {
+            opacity: 1;
+            transform: none;
+            transition-delay: .12s;
+        }
+
+        #mob-menu.open .mob-nav-links a:nth-child(2) {
+            opacity: 1;
+            transform: none;
+            transition-delay: .18s;
+        }
+
+        #mob-menu.open .mob-nav-links a:nth-child(3) {
+            opacity: 1;
+            transform: none;
+            transition-delay: .24s;
+        }
+
+        #mob-menu.open .mob-nav-links a:nth-child(4) {
+            opacity: 1;
+            transform: none;
+            transition-delay: .30s;
+        }
+
+        #mob-menu.open .mob-nav-links a:nth-child(5) {
+            opacity: 1;
+            transform: none;
+            transition-delay: .36s;
+        }
+
+        .mob-nav-links a:hover {
+            color: white;
+            padding-left: 8px;
+        }
+
+        .mob-nav-links a:last-child {
+            color: var(--pg);
+            border-bottom: none;
+        }
+
+        .mob-nav-links a:last-child:hover {
+            color: white;
+        }
+
+        .mob-link-arrow {
+            font-size: 1rem;
+            opacity: .3;
+            transition: opacity .25s, transform .25s var(--ease);
+        }
+
+        .mob-nav-links a:hover .mob-link-arrow {
+            opacity: 1;
+            transform: translateX(6px);
+        }
+
+        /* Bottom info strip */
+        .mob-menu-footer {
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, .07);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            position: relative;
+            z-index: 2;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity .5s var(--ease) .42s, transform .5s var(--ease) .42s;
+        }
+
+        #mob-menu.open .mob-menu-footer {
+            opacity: 1;
+            transform: none;
+        }
+
+        .mob-footer-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .mob-footer-label {
+            font-size: .6rem;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .28);
+            font-weight: 700;
+        }
+
+        .mob-footer-val {
+            font-size: .85rem;
+            color: rgba(255, 255, 255, .55);
+            text-decoration: none;
+        }
+
+        .mob-footer-tag {
+            font-size: .65rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: rgba(200, 230, 200, .35);
+            text-align: right;
         }
 
         /* ── SCROLL ANIMATIONS ── */
@@ -673,7 +945,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 0 80px 60px;
+            padding: 100px 80px 60px;
             min-height: 100vh;
             max-width: 800px;
             pointer-events: none;
@@ -1263,410 +1535,416 @@
         }
 
         /* ══════════════════════════════════════
-       SERVICES — Premium Accordion Layout
+       SERVICES — Full-Width USP Feature Wall
     ══════════════════════════════════════ */
         #services {
             background: var(--dark);
-            padding: 100px 64px;
+            padding: 0;
+            overflow: hidden;
+            position: relative;
         }
 
-        #services .sec-title {
-            color: white;
+        /* Ambient background glow */
+        #services::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            right: -200px;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(61, 122, 61, .12) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
         }
 
-        #services .eyebrow {
-            color: var(--pg);
+        #services::after {
+            content: '';
+            position: absolute;
+            bottom: -150px;
+            left: -150px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(245, 192, 154, .07) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
         }
 
-        #services .eyebrow::before {
-            background: var(--pg);
-        }
-
-        .svc-header {
+        /* ── TOP HEADER BAND ── */
+        .svc-top-band {
+            padding: 80px 64px 0;
+            position: relative;
+            z-index: 2;
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            margin-bottom: 64px;
             gap: 32px;
             flex-wrap: wrap;
         }
 
-        .svc-header .sec-sub {
-            color: rgba(255, 255, 255, .4);
-            max-width: 380px;
+        .svc-top-band .sec-title {
+            color: white;
         }
 
-        /* ── ACCORDION LIST ── */
-        .svc-accordion {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-            border: 1px solid rgba(255, 255, 255, .08);
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
-        .svc-acc-item {
-            border-bottom: 1px solid rgba(255, 255, 255, .07);
-            overflow: hidden;
-            transition: background .3s;
-        }
-
-        .svc-acc-item:last-child {
-            border-bottom: none;
-        }
-
-        .svc-acc-trigger {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            padding: 22px 28px;
-            cursor: none;
-            transition: background .25s var(--ease);
-            position: relative;
-        }
-
-        .svc-acc-trigger:hover {
-            background: rgba(255, 255, 255, .04);
-        }
-
-        .svc-acc-item.open .svc-acc-trigger {
-            background: rgba(61, 122, 61, .12);
-        }
-
-        .svc-acc-num {
-            font-size: .55rem;
-            letter-spacing: .18em;
-            color: rgba(255, 255, 255, .25);
-            text-transform: uppercase;
-            font-weight: 700;
-            width: 24px;
-            flex-shrink: 0;
-        }
-
-        .svc-acc-item.open .svc-acc-num {
+        .svc-top-band .eyebrow {
             color: var(--pg);
         }
 
-        .svc-acc-ico-wrap {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
+        .svc-top-band .eyebrow::before {
+            background: var(--pg);
+        }
+
+        .svc-top-band .sec-sub {
+            color: rgba(255, 255, 255, .38);
+            max-width: 340px;
+        }
+
+        /* ── SERVICES GRID: full-width cards ── */
+        .svc-feature-wrap {
+            position: relative;
+            z-index: 2;
+            padding: 48px 64px 80px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
             background: rgba(255, 255, 255, .05);
+            border-top: 1px solid rgba(255, 255, 255, .06);
+            border-bottom: 1px solid rgba(255, 255, 255, .06);
+            margin-top: 48px;
+        }
+
+        .svc-fw-card {
+            background: var(--dark);
+            padding: 40px 32px 36px;
+            position: relative;
+            cursor: none;
+            overflow: hidden;
+            transition: background .4s var(--ease);
+        }
+
+        /* Vertical dividers between cards */
+        .svc-fw-card+.svc-fw-card {
+            border-left: 1px solid rgba(255, 255, 255, .05);
+        }
+
+        /* Horizontal divider for bottom row */
+        .svc-fw-card:nth-child(n+5) {
+            border-top: 1px solid rgba(255, 255, 255, .05);
+        }
+
+        /* Hover fill from bottom */
+        .svc-fw-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(160deg, rgba(61, 122, 61, .14) 0%, rgba(61, 122, 61, .06) 100%);
+            opacity: 0;
+            transition: opacity .45s var(--ease);
+            z-index: 0;
+        }
+
+        .svc-fw-card:hover::after {
+            opacity: 1;
+        }
+
+        /* Top accent line that grows on hover */
+        .svc-fw-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--pg4), var(--pg2));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .5s var(--ease);
+            z-index: 3;
+        }
+
+        .svc-fw-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .svc-fw-inner {
+            position: relative;
+            z-index: 1;
+        }
+
+        .svc-fw-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, .04);
+            line-height: 1;
+            position: absolute;
+            top: -8px;
+            right: 0;
+            letter-spacing: -.02em;
+            transition: color .4s;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .svc-fw-card:hover .svc-fw-num {
+            color: rgba(200, 230, 200, .08);
+        }
+
+        .svc-fw-ico {
+            font-size: 2rem;
+            width: 56px;
+            height: 56px;
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid rgba(255, 255, 255, .07);
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
-            flex-shrink: 0;
-            transition: background .25s;
+            margin-bottom: 20px;
+            transition: background .35s, border-color .35s, transform .35s var(--ease);
         }
 
-        .svc-acc-item.open .svc-acc-ico-wrap {
-            background: rgba(61, 122, 61, .28);
+        .svc-fw-card:hover .svc-fw-ico {
+            background: rgba(61, 122, 61, .25);
+            border-color: rgba(200, 230, 200, .2);
+            transform: scale(1.08) rotate(-3deg);
         }
 
-        .svc-acc-info {
-            flex: 1;
+        .svc-fw-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.45rem;
+            font-weight: 400;
+            color: rgba(255, 255, 255, .75);
+            line-height: 1.15;
+            margin-bottom: 12px;
+            transition: color .3s;
         }
 
-        .svc-acc-name {
-            font-size: .95rem;
-            font-weight: 600;
-            color: rgba(255, 255, 255, .7);
-            line-height: 1.2;
-            transition: color .25s;
-        }
-
-        .svc-acc-item.open .svc-acc-name {
+        .svc-fw-card:hover .svc-fw-name {
             color: white;
         }
 
-        .svc-acc-tagline {
-            font-size: .72rem;
-            color: rgba(255, 255, 255, .28);
-            margin-top: 3px;
-            transition: color .25s;
+        .svc-fw-desc {
+            font-size: .78rem;
+            color: rgba(255, 255, 255, .32);
+            line-height: 1.75;
+            margin-bottom: 20px;
+            transition: color .3s;
         }
 
-        .svc-acc-item.open .svc-acc-tagline {
-            color: rgba(200, 230, 200, .55);
+        .svc-fw-card:hover .svc-fw-desc {
+            color: rgba(255, 255, 255, .52);
         }
 
-        .svc-acc-chevron {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            border: 1px solid rgba(255, 255, 255, .12);
+        /* Tag pills */
+        .svc-fw-tags {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255, 255, 255, .3);
-            font-size: .65rem;
-            transition: all .3s var(--ease);
-            flex-shrink: 0;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 24px;
         }
 
-        .svc-acc-item.open .svc-acc-chevron {
-            background: var(--pg4);
-            border-color: var(--pg4);
-            color: white;
-            transform: rotate(180deg);
+        .svc-fw-tag {
+            font-size: .57rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: rgba(200, 230, 200, .5);
+            background: rgba(200, 230, 200, .06);
+            border: 1px solid rgba(200, 230, 200, .1);
+            padding: 3px 9px;
+            border-radius: 20px;
+            transition: background .3s, color .3s;
         }
 
-        /* ── ACCORDION PANEL ── */
-        .svc-acc-panel {
+        .svc-fw-card:hover .svc-fw-tag {
+            background: rgba(200, 230, 200, .12);
+            color: rgba(200, 230, 200, .8);
+        }
+
+        /* Expandable detail on hover */
+        .svc-fw-detail {
             max-height: 0;
             overflow: hidden;
-            transition: max-height .5s cubic-bezier(.16, 1, .3, 1);
+            transition: max-height .5s var(--ease);
         }
 
-        .svc-acc-item.open .svc-acc-panel {
-            max-height: 600px;
+        .svc-fw-card:hover .svc-fw-detail {
+            max-height: 300px;
         }
 
-        .svc-acc-body {
-            padding: 0 28px 32px 116px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 32px 48px;
-        }
-
-        .svc-overview {
-            grid-column: 1 / -1;
-        }
-
-        .svc-overview p {
-            font-size: .88rem;
-            color: rgba(255, 255, 255, .6);
-            line-height: 1.85;
-            padding-bottom: 24px;
-            border-bottom: 1px solid rgba(255, 255, 255, .06);
-        }
-
-        .svc-col-label {
-            font-size: .58rem;
-            font-weight: 700;
-            letter-spacing: .16em;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, .3);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .svc-col-label::before {
-            content: '';
-            display: block;
-            width: 14px;
-            height: 1px;
-            background: rgba(255, 255, 255, .2);
-        }
-
-        .svc-problem-list,
-        .svc-step-list {
+        .svc-fw-steps {
+            border-top: 1px solid rgba(255, 255, 255, .06);
+            padding-top: 16px;
             display: flex;
             flex-direction: column;
             gap: 8px;
+            margin-bottom: 18px;
         }
 
-        .svc-problem-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: .82rem;
-            color: rgba(255, 255, 255, .55);
-            line-height: 1.5;
-        }
-
-        .svc-problem-item::before {
-            content: '';
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: rgba(200, 230, 200, .4);
-            flex-shrink: 0;
-        }
-
-        .svc-step-item {
+        .svc-fw-step {
             display: flex;
             align-items: flex-start;
             gap: 10px;
-            font-size: .82rem;
-            color: rgba(255, 255, 255, .55);
+            font-size: .75rem;
+            color: rgba(255, 255, 255, .38);
             line-height: 1.5;
         }
 
-        .svc-step-n {
-            width: 20px;
-            height: 20px;
+        .svc-fw-step-n {
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
-            background: rgba(61, 122, 61, .35);
-            border: 1px solid rgba(200, 230, 200, .2);
+            background: rgba(61, 122, 61, .3);
+            border: 1px solid rgba(200, 230, 200, .15);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: .6rem;
+            font-size: .55rem;
             font-weight: 700;
             color: var(--pg);
             flex-shrink: 0;
             margin-top: 1px;
         }
 
-        .svc-acc-tags {
-            grid-column: 1 / -1;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 7px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, .05);
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .svc-tag-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 7px;
-        }
-
-        .svc-tag {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: .62rem;
-            font-weight: 600;
-            background: rgba(200, 230, 200, .07);
-            border: 1px solid rgba(200, 230, 200, .15);
-            color: rgba(200, 230, 200, .7);
-        }
-
-        .svc-book-btn {
+        .svc-fw-cta {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 9px 20px;
-            border-radius: 30px;
-            background: var(--pg4);
-            color: white;
-            font-size: .75rem;
+            gap: 7px;
+            font-size: .72rem;
             font-weight: 700;
-            letter-spacing: .04em;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            color: var(--pg);
             text-decoration: none;
-            transition: all .25s var(--ease);
-            white-space: nowrap;
+            transition: gap .25s, color .25s;
         }
 
-        .svc-book-btn:hover {
-            background: var(--po4);
-            transform: translateY(-1px);
-            box-shadow: 0 8px 24px rgba(61, 122, 61, .3);
+        .svc-fw-cta:hover {
+            gap: 12px;
+            color: var(--pg2);
         }
 
-        /* ── SERVICES LAYOUT ── */
-        .svc-main-layout {
-            display: grid;
-            grid-template-columns: 320px 1fr;
-            gap: 32px;
-            align-items: start;
-        }
-
-        .svc-pill-list {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .svc-pill {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 14px 18px;
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, .07);
-            cursor: none;
-            transition: background .25s var(--ease), border-color .25s;
-            position: relative;
-        }
-
-        .svc-pill:hover {
-            background: rgba(255, 255, 255, .04);
-            border-color: rgba(255, 255, 255, .12);
-        }
-
-        .svc-pill.active {
-            background: rgba(61, 122, 61, .15);
-            border-color: rgba(200, 230, 200, .25);
-        }
-
-        .svc-pill-ico {
-            font-size: 1.4rem;
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, .05);
-            border-radius: 10px;
+        .svc-fw-cta .arr {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 1px solid rgba(200, 230, 200, .25);
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
+            font-size: .75rem;
+            transition: background .25s, border-color .25s;
         }
 
-        .svc-pill.active .svc-pill-ico {
-            background: rgba(61, 122, 61, .3);
-        }
-
-        .svc-pill-text {
-            flex: 1;
-        }
-
-        .svc-pill-num {
-            font-size: .55rem;
-            letter-spacing: .15em;
-            color: rgba(255, 255, 255, .25);
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .svc-pill.active .svc-pill-num {
-            color: var(--pg);
-        }
-
-        .svc-pill-name {
-            font-size: .88rem;
-            font-weight: 600;
-            color: rgba(255, 255, 255, .65);
-            margin-top: 2px;
-        }
-
-        .svc-pill.active .svc-pill-name {
+        .svc-fw-cta:hover .arr {
+            background: var(--pg4);
+            border-color: var(--pg4);
             color: white;
         }
 
-        .svc-pill-arr {
-            color: rgba(255, 255, 255, .2);
-            font-size: .85rem;
-            transition: color .2s, transform .2s;
+        /* ── BOTTOM BANNER — USP strip ── */
+        .svc-usp-strip {
+            position: relative;
+            z-index: 2;
+            padding: 0 64px 80px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
         }
 
-        .svc-pill.active .svc-pill-arr {
-            color: var(--pg);
-            transform: translateX(3px);
+        .svc-usp-card {
+            background: rgba(255, 255, 255, .025);
+            border: 1px solid rgba(255, 255, 255, .06);
+            border-radius: 16px;
+            padding: 28px 24px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            transition: background .3s, border-color .3s;
+        }
+
+        .svc-usp-card:hover {
+            background: rgba(255, 255, 255, .05);
+            border-color: rgba(200, 230, 200, .12);
+        }
+
+        .svc-usp-ico {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .svc-usp-title {
+            font-size: .84rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 5px;
+            letter-spacing: .01em;
+        }
+
+        .svc-usp-sub {
+            font-size: .73rem;
+            color: rgba(255, 255, 255, .35);
+            line-height: 1.65;
+        }
+
+        /* Legacy pill/detail vars — kept so JS doesn't break */
+        .svc-main-layout {
+            display: none;
+        }
+
+        .svc-pill-list {
+            display: none;
         }
 
         .svc-detail-card {
-            background: rgba(255, 255, 255, .03);
-            border: 1px solid rgba(255, 255, 255, .09);
-            border-radius: 20px;
-            padding: 36px;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity .35s ease, transform .35s ease;
+            display: none;
         }
 
-        .sdc-top {
-            display: flex;
-            gap: 20px;
-            align-items: flex-start;
-            margin-bottom: 20px;
+        /* ── TRANSITION KEYFRAMES ── */
+        @keyframes sdcSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes sdcLineIn {
+            0% {
+                transform: scaleX(0);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scaleX(1);
+                opacity: 1;
+            }
+        }
+
+        .sdc-animating .sdc-top {
+            animation: sdcSlideUp .38s cubic-bezier(.16, 1, .3, 1) .04s both;
+        }
+
+        .sdc-animating .sdc-desc {
+            animation: sdcSlideUp .38s cubic-bezier(.16, 1, .3, 1) .10s both;
+        }
+
+        .sdc-animating .sdc-cols {
+            animation: sdcSlideUp .38s cubic-bezier(.16, 1, .3, 1) .17s both;
+        }
+
+        .sdc-animating .sdc-cta {
+            animation: sdcSlideUp .38s cubic-bezier(.16, 1, .3, 1) .23s both;
+        }
+
+        .sdc-animating .sdc-col-label::before {
+            transform-origin: left;
+            animation: sdcLineIn .4s cubic-bezier(.16, 1, .3, 1) .22s both;
         }
 
         .sdc-ico {
@@ -1755,8 +2033,8 @@
             background: rgba(255, 255, 255, .2);
         }
 
-        .sdc-problem-list,
-        .sdc-step-list {
+        .svc-problem-list,
+        .svc-step-list {
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -3707,37 +3985,61 @@
             gap: 10px;
         }
 
-        /* ── RESPONSIVE ── */
+        /* ══════════════════════════════════════
+           RESPONSIVE — LARGE TABLET (≤1100px)
+        ══════════════════════════════════════ */
         @media(max-width:1100px) {
-            .contact-grid {
-                grid-template-columns: 1fr 1fr;
+            section {
+                padding: 96px 48px;
             }
 
-            .loc-col {
-                grid-column: 1/-1;
-            }
-
-            .gallery-grid {
-                grid-template-columns: 1fr 1fr;
-                grid-template-rows: auto;
-            }
-
-            .gimg:first-child {
-                grid-row: auto;
+            footer {
+                padding: 56px 48px 32px;
             }
 
             .footer-grid {
                 grid-template-columns: 1fr 1fr;
+                gap: 36px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: 220px 220px 220px;
+            }
+
+            .gimg:first-child {
+                grid-row: span 2;
+            }
+
+            #doctor {
+                grid-template-columns: 1fr;
+                gap: 48px;
+                padding: 80px 48px;
+            }
+
+            .doc-img-frame {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
             }
         }
 
-        @media(max-width:960px) {
+        /* ══════════════════════════════════════
+           RESPONSIVE — TABLET (≤768px)
+        ══════════════════════════════════════ */
+        @media(max-width:768px) {
+
+            /* Nav */
             nav {
-                padding: 14px 24px;
+                padding: 12px 20px;
             }
 
             nav.solid {
-                padding: 12px 24px;
+                padding: 10px 20px;
             }
 
             .nav-links,
@@ -3749,81 +4051,6 @@
                 display: flex;
             }
 
-            section {
-                padding: 80px 24px;
-            }
-
-            #hero {
-                grid-template-columns: 1fr;
-            }
-
-            .hero-left {
-                padding: 0 28px 80px;
-                max-width: 100%;
-            }
-
-            .hero-right {
-                min-height: 100vh;
-            }
-
-            .hbc-progress {
-                padding: 0 28px;
-            }
-
-            .hbc-text {
-                right: 28px;
-                bottom: 36px;
-            }
-
-            .svc-main-layout {
-                grid-template-columns: 1fr;
-            }
-
-            .svc-detail-card {
-                position: static;
-            }
-
-            .sdc-cols {
-                grid-template-columns: 1fr;
-            }
-
-            .rev-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .rev-score-banner {
-                gap: 24px;
-            }
-
-            .rev-score-divider {
-                display: none;
-            }
-
-            .svc-panel {
-                grid-template-columns: 1fr;
-            }
-
-            .svc-list {
-                border-right: none;
-                border-bottom: 1px solid rgba(255, 255, 255, .07);
-            }
-
-            #doctor {
-                grid-template-columns: 1fr;
-            }
-
-            .contact-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .rev-header {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr;
-            }
-
             body {
                 cursor: auto;
             }
@@ -3833,10 +4060,318 @@
             #cur-label {
                 display: none;
             }
+
+            /* Global section padding */
+            section {
+                padding: 72px 20px;
+            }
+
+            footer {
+                padding: 52px 20px 28px;
+            }
+
+            /* Hero */
+            .hero-left {
+                padding: 110px 20px 72px;
+                max-width: 100%;
+                min-height: 100svh;
+                justify-content: flex-end;
+            }
+
+            .hero-h1 {
+                font-size: clamp(2.6rem, 10vw, 4.5rem);
+            }
+
+            .hero-desc {
+                font-size: .88rem;
+                max-width: 100%;
+            }
+
+            .hero-btns {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .hero-btns .btn {
+                width: 100%;
+                justify-content: center;
+                font-size: .85rem;
+            }
+
+            .hero-stats {
+                gap: 20px;
+                flex-wrap: wrap;
+            }
+
+            .hero-stat-item {
+                padding-right: 20px;
+                margin-right: 20px;
+            }
+
+            .hstat-n {
+                font-size: 2rem;
+            }
+
+            .hfl-card {
+                display: none;
+            }
+
+            .hbc-text {
+                right: 20px;
+                bottom: 32px;
+            }
+
+            .hbc-progress {
+                padding: 0 20px;
+            }
+
+            .hero-divider {
+                margin-bottom: 20px;
+            }
+
+            /* Services */
+            .svc-top-band {
+                padding: 56px 20px 0;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .svc-top-band .sec-sub {
+                max-width: 100%;
+            }
+
+            .svc-feature-wrap {
+                grid-template-columns: 1fr 1fr;
+                padding: 28px 20px 48px;
+                gap: 1px;
+            }
+
+            .svc-fw-card {
+                padding: 28px 20px 24px;
+            }
+
+            .svc-fw-name {
+                font-size: 1.2rem;
+            }
+
+            .svc-fw-detail {
+                display: none;
+            }
+
+            /* always-visible on small mobile below */
+
+            /* On tablet, show steps always — no hover needed on touch */
+            .svc-fw-detail {
+                display: block !important;
+                max-height: none !important;
+            }
+
+            /* Reviews */
+            .rev-score-banner {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+                padding: 24px 20px;
+            }
+
+            .rev-score-divider {
+                display: none;
+            }
+
+            .rev-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .rev-header {
+                grid-template-columns: 1fr;
+            }
+
+            .rev-hero-banner {
+                grid-template-columns: 1fr;
+            }
+
+            .rev-hero-right {
+                display: none;
+            }
+
+            .rev-hero-left {
+                padding: 32px 28px;
+            }
+
+            /* Gallery */
+            .clinic-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: 160px 160px 160px;
+            }
+
+            .gimg:first-child {
+                grid-row: span 2;
+            }
+
+            /* Doctor */
+            #doctor {
+                grid-template-columns: 1fr;
+                gap: 36px;
+                padding: 72px 20px;
+            }
+
+            .doc-img-frame {
+                max-width: 320px;
+                margin: 0 auto;
+            }
+
+            .doc-accent {
+                right: -8px;
+                bottom: -8px;
+            }
+
+            .doc-creds {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .doc-stats {
+                flex-wrap: wrap;
+                gap: 16px;
+            }
+
+            /* Contact / Booking */
+            #contact {
+                padding: 72px 20px;
+            }
+
+            .contact-head {
+                margin-bottom: 40px;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .bk-form-card {
+                padding: 24px 20px;
+            }
+
+            .form-row-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .bk-hours-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .bk-info-col {
+                gap: 16px;
+            }
+
+            /* Footer */
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 28px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 6px;
+                text-align: center;
+            }
+
+            /* Ticker */
+            .ticker-item {
+                font-size: .7rem;
+                padding: 0 20px;
+            }
+
+            /* Loc hours */
+            .loc-hours {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            /* Misc */
+            .svc-panel {
+                grid-template-columns: 1fr;
+            }
+
+            .svc-list {
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, .07);
+            }
+
+            .sdc-cols {
+                grid-template-columns: 1fr;
+            }
         }
 
-        @media(max-width:540px) {
+        /* ══════════════════════════════════════
+           RESPONSIVE — SMALL MOBILE (≤420px)
+        ══════════════════════════════════════ */
+        @media(max-width:420px) {
+            section {
+                padding: 64px 16px;
+            }
+
+            footer {
+                padding: 48px 16px 24px;
+            }
+
+            .hero-left {
+                padding: 100px 16px 64px;
+            }
+
+            .hero-h1 {
+                font-size: clamp(2.2rem, 9vw, 3rem);
+            }
+
+            .hero-stats {
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .hero-stat-item {
+                padding-right: 16px;
+                margin-right: 16px;
+                border-right: 1px solid rgba(255, 255, 255, .1);
+            }
+
+            .hero-stat-item:last-child {
+                border-right: none;
+            }
+
+            .hstat-n {
+                font-size: 1.8rem;
+            }
+
+            .svc-top-band {
+                padding: 48px 16px 0;
+            }
+
+            .svc-feature-wrap {
+                grid-template-columns: 1fr;
+                padding: 20px 16px 40px;
+            }
+
+            .svc-fw-card+.svc-fw-card {
+                border-left: none;
+                border-top: 1px solid rgba(255, 255, 255, .05);
+            }
+
             .gallery-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: 200px 160px 160px 160px 160px;
+            }
+
+            .gimg:first-child {
+                grid-row: auto;
+            }
+
+            .footer-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -3844,25 +4379,36 @@
                 grid-template-columns: 1fr;
             }
 
-            .hero-stats {
-                gap: 24px;
+            .bk-hours-grid {
+                grid-template-columns: 1fr;
             }
 
             .loc-hours {
                 grid-template-columns: 1fr;
             }
 
-            .rev-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .sdc-cols {
-                grid-template-columns: 1fr;
-            }
-
             .rev-score-banner {
-                flex-direction: column;
-                gap: 16px;
+                padding: 20px 16px;
+            }
+
+            .contact-grid {
+                gap: 20px;
+            }
+
+            .bk-form-card {
+                padding: 20px 16px;
+            }
+
+            nav {
+                padding: 10px 16px;
+            }
+
+            #contact {
+                padding: 64px 16px;
+            }
+
+            #doctor {
+                padding: 64px 16px;
             }
         }
     </style>
@@ -3877,11 +4423,8 @@
 
     <!-- PRELOADER -->
     <div id="preloader">
-        <div class="pl-logo">
-            <span>D</span><span>E</span><span>N</span><span>T</span><span>A</span><span>L</span>
-            <span>&nbsp;</span>
-            <span>E</span><span>N</span><span>C</span><span>L</span><span>A</span><span>V</span><span>E</span>
-        </div>
+        <img src="LOGO2.png" alt="Dental Enclave"
+            style="height:clamp(60px,10vw,100px);width:auto;opacity:0;animation:plFadeIn .6s .2s ease forwards;">
         <div class="pl-bar-wrap">
             <div class="pl-bar"></div>
         </div>
@@ -3890,24 +4433,35 @@
 
     <!-- MOBILE MENU -->
     <div id="mob-menu">
-        <button id="mob-close" onclick="closeMob()">✕</button>
-        <a href="#hero" onclick="closeMob()">Home</a>
-        <a href="#services" onclick="closeMob()">Services</a>
-        <a href="#reviews" onclick="closeMob()">Reviews</a>
-        <a href="#doctor" onclick="closeMob()">About</a>
-        <a href="#contact" onclick="closeMob()">Book Now</a>
+        <div class="mob-menu-top">
+            <span class="mob-menu-brand">Dental Enclave</span>
+            <button id="mob-close" onclick="closeMob()">✕</button>
+        </div>
+        <nav class="mob-nav-links">
+            <a href="#hero" onclick="closeMob()">Home <span class="mob-link-arrow">→</span></a>
+            <a href="#services" onclick="closeMob()">Services <span class="mob-link-arrow">→</span></a>
+            <a href="#reviews" onclick="closeMob()">Reviews <span class="mob-link-arrow">→</span></a>
+            <a href="#doctor" onclick="closeMob()">About <span class="mob-link-arrow">→</span></a>
+            <a href="#contact" onclick="closeMob()">Book Appointment <span class="mob-link-arrow">→</span></a>
+        </nav>
+        <div class="mob-menu-footer">
+            <div class="mob-footer-contact">
+                <span class="mob-footer-label">Location</span>
+                <span class="mob-footer-val">Malad West, Mumbai</span>
+            </div>
+            <div class="mob-footer-contact" style="text-align:right">
+                <span class="mob-footer-label">Hours</span>
+                <span class="mob-footer-val">Mon – Sun · 9AM – 7PM</span>
+            </div>
+        </div>
     </div>
 
     <!-- NAV -->
     <nav id="nav">
         <div class="nav-logo">
-            <div class="nav-logo-mark">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M12 2C9 2 6 4.5 6 7.5c0 2 .8 3.5 1.5 4.7l.8 4c.4 1.6.8 3.3 2 3.3s1.6-1.2 2-2.4c.4 1.2.8 2.4 2 2.4s1.6-1.7 2-3.3l.8-4c.7-1.2 1.5-2.7 1.5-4.7 0-3-3-5.5-6-5.5z" />
-                </svg>
+            <div class="nav-logo-wrap">
+                <img src="LOGO2.png" alt="Dental Enclave" style="height:48px;width:auto;display:block;">
             </div>
-            <div class="nav-brand">DENTAL <b>ENCLAVE</b></div>
         </div>
         <ul class="nav-links">
             <li><a href="#services">Services</a></li>
@@ -3958,11 +4512,22 @@
                             <div class="hbc-sub">BDS · Implantologist · 15 Yrs</div>
                         </div>
                     </div>
+                    <div class="hbc-slide">
+                        <div class="hbc-bg hbc-img-bg" style="background-image:url('CLINIC_3.JPG')"></div>
+                        <div class="hbc-overlay"></div>
+                        <div class="hbc-text">
+                            <div class="hbc-label">Expert Care in Action</div>
+                            <div class="hbc-sub">Precision · Comfort · Trust</div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- Slide progress bar -->
             <div class="hbc-progress" id="hbcProgress">
                 <div class="hbc-prog-item active">
+                    <div class="hbc-prog-fill"></div>
+                </div>
+                <div class="hbc-prog-item">
                     <div class="hbc-prog-fill"></div>
                 </div>
                 <div class="hbc-prog-item">
@@ -3987,13 +4552,6 @@
         </div>
         <!-- TEXT OVERLAID ON TOP -->
         <div class="hero-left">
-
-            <div class="hero-eyeline">
-                <div class="hero-eyeline-bar"></div>
-                <div class="hero-eyeline-text">Dental Enclave · Malad West</div>
-                <div class="hero-eyeline-dot"></div>
-                <div class="hero-eyeline-status">Open Today</div>
-            </div>
 
             <h1 class="hero-h1">
                 <div class="line">
@@ -4058,87 +4616,293 @@
 
     <!-- ═══════════════ SERVICES ═══════════════ -->
     <section id="services">
-        <div class="svc-header">
+
+        <!-- HIDDEN stubs so JS doesn't throw errors -->
+        <div id="svcPillList" style="display:none"></div>
+        <div id="svcDetailCard" style="display:none"></div>
+
+        <!-- TOP HEADER BAND -->
+        <div class="svc-top-band">
             <div class="sa up">
                 <div class="eyebrow">What We Offer</div>
-                <h2 class="sec-title">Services <em>crafted</em><br>for every smile</h2>
+                <h2 class="sec-title">Everything your<br>smile <em>needs.</em></h2>
             </div>
-            <p class="sec-sub sa up" data-d="2">Click any service to explore treatment details, causes we address, and
-                what to expect.</p>
+            <p class="sec-sub sa up" data-d="2">8 specialist treatments under one roof — hover any card to see exactly
+                what to expect, step by step.</p>
         </div>
 
-        <div class="svc-main-layout sa up" data-d="1">
-            <!-- LEFT: pill list -->
-            <div class="svc-pill-list" id="svcPillList">
-                <div class="svc-pill active" data-svc="0">
-                    <div class="svc-pill-ico">🦷</div>
-                    <div class="svc-pill-text">
-                        <div class="svc-pill-num">01</div>
-                        <div class="svc-pill-name">Teeth Whitening</div>
+        <!-- 4×2 FEATURE WALL GRID -->
+        <div class="svc-feature-wrap">
+
+            <!-- 01 Teeth Whitening -->
+            <div class="svc-fw-card sa up" data-d="1">
+                <div class="svc-fw-inner">
+                    <div class="svc-fw-num">01</div>
+                    <div class="svc-fw-ico">🦷</div>
+                    <div class="svc-fw-name">Teeth Whitening</div>
+                    <div class="svc-fw-desc">Professional in-clinic whitening removes years of staining in a single
+                        60-minute session.</div>
+                    <div class="svc-fw-tags">
+                        <span class="svc-fw-tag">Single Session</span>
+                        <span class="svc-fw-tag">60 Min</span>
+                        <span class="svc-fw-tag">Lasts 2 Years</span>
                     </div>
-                    <span class="svc-pill-arr">→</span>
-                </div>
-                <div class="svc-pill" data-svc="1">
-                    <div class="svc-pill-ico">✨</div>
-                    <div class="svc-pill-text">
-                        <div class="svc-pill-num">02</div>
-                        <div class="svc-pill-name">Smile Design</div>
+                    <div class="svc-fw-detail">
+                        <div class="svc-fw-steps">
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">1</div><span>Shade mapping &amp; dental assessment</span>
+                            </div>
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">2</div><span>Medical-grade gel tray application</span>
+                            </div>
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">3</div><span>LED light activation for deep lift</span>
+                            </div>
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">4</div><span>Final shade check &amp; aftercare</span>
+                            </div>
+                        </div>
+                        <a href="#contact" class="svc-fw-cta">Book Now <span class="arr">→</span></a>
                     </div>
-                    <span class="svc-pill-arr">→</span>
-                </div>
-                <div class="svc-pill" data-svc="2">
-                    <div class="svc-pill-ico">🔩</div>
-                    <div class="svc-pill-text">
-                        <div class="svc-pill-num">03</div>
-                        <div class="svc-pill-name">Dental Implants</div>
-                    </div>
-                    <span class="svc-pill-arr">→</span>
-                </div>
-                <div class="svc-pill" data-svc="3">
-                    <div class="svc-pill-ico">〰️</div>
-                    <div class="svc-pill-text">
-                        <div class="svc-pill-num">04</div>
-                        <div class="svc-pill-name">Braces &amp; Invisalign</div>
-                    </div>
-                    <span class="svc-pill-arr">→</span>
-                </div>
-                <div class="svc-pill" data-svc="4">
-                    <div class="svc-pill-ico">🪥</div>
-                    <div class="svc-pill-text">
-                        <div class="svc-pill-num">05</div>
-                        <div class="svc-pill-name">Scaling &amp; Cleaning</div>
-                    </div>
-                    <span class="svc-pill-arr">→</span>
-                </div>
-                <div class="svc-pill" data-svc="5">
-                    <div class="svc-pill-ico">💉</div>
-                    <div class="svc-pill-text">
-                        <div class="svc-pill-num">06</div>
-                        <div class="svc-pill-name">Root Canal</div>
-                    </div>
-                    <span class="svc-pill-arr">→</span>
-                </div>
-                <div class="svc-pill" data-svc="6">
-                    <div class="svc-pill-ico">👑</div>
-                    <div class="svc-pill-text">
-                        <div class="svc-pill-num">07</div>
-                        <div class="svc-pill-name">Crowns &amp; Bridges</div>
-                    </div>
-                    <span class="svc-pill-arr">→</span>
-                </div>
-                <div class="svc-pill" data-svc="7">
-                    <div class="svc-pill-ico">👶</div>
-                    <div class="svc-pill-text">
-                        <div class="svc-pill-num">08</div>
-                        <div class="svc-pill-name">Kids Dentistry</div>
-                    </div>
-                    <span class="svc-pill-arr">→</span>
                 </div>
             </div>
 
-            <!-- RIGHT: detail card -->
-            <div class="svc-detail-card" id="svcDetailCard"><!-- filled by JS --></div>
+            <!-- 02 Smile Design -->
+            <div class="svc-fw-card sa up" data-d="2">
+                <div class="svc-fw-inner">
+                    <div class="svc-fw-num">02</div>
+                    <div class="svc-fw-ico">✨</div>
+                    <div class="svc-fw-name">Smile Design</div>
+                    <div class="svc-fw-desc">Custom porcelain veneers and laminates crafted from a digital preview —
+                        what you see is what you get.</div>
+                    <div class="svc-fw-tags">
+                        <span class="svc-fw-tag">Digital Preview</span>
+                        <span class="svc-fw-tag">Veneers</span>
+                        <span class="svc-fw-tag">Bonding</span>
+                    </div>
+                    <div class="svc-fw-detail">
+                        <div class="svc-fw-steps">
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">1</div><span>Digital smile preview &amp; design</span>
+                            </div>
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">2</div><span>Minimal tooth preparation</span>
+                            </div>
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">3</div><span>Custom veneer fabrication</span>
+                            </div>
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">4</div><span>Precision bonding &amp; final polish</span>
+                            </div>
+                        </div>
+                        <a href="#contact" class="svc-fw-cta">Design My Smile <span class="arr">→</span></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 03 Dental Implants -->
+            <div class="svc-fw-card sa up" data-d="3">
+                <div class="svc-fw-inner">
+                    <div class="svc-fw-num">03</div>
+                    <div class="svc-fw-ico">🔩</div>
+                    <div class="svc-fw-name">Dental Implants</div>
+                    <div class="svc-fw-desc">Permanent titanium implants that look, feel, and function exactly like
+                        natural teeth. 1,000+ placed by Dr. Koli.</div>
+                    <div class="svc-fw-tags">
+                        <span class="svc-fw-tag">Lifetime Solution</span>
+                        <span class="svc-fw-tag">1000+ Placed</span>
+                        <span class="svc-fw-tag">3D Planned</span>
+                    </div>
+                    <div class="svc-fw-detail">
+                        <div class="svc-fw-steps">
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">1</div><span>3D scan &amp; implant planning</span>
+                            </div>
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">2</div><span>Titanium post placement (1 hr)</span>
+                            </div>
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">3</div><span>Osseointegration (6–12 wks)</span>
+                            </div>
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">4</div><span>Permanent crown placement</span>
+                            </div>
+                        </div>
+                        <a href="#contact" class="svc-fw-cta">Get Consult <span class="arr">→</span></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 04 Braces & Invisalign -->
+            <div class="svc-fw-card sa up" data-d="4">
+                <div class="svc-fw-inner">
+                    <div class="svc-fw-num">04</div>
+                    <div class="svc-fw-ico">〰️</div>
+                    <div class="svc-fw-name">Braces &amp; Invisalign</div>
+                    <div class="svc-fw-desc">Metal braces or nearly-invisible Invisalign aligners — every stage
+                        digitally planned so you see the result first.</div>
+                    <div class="svc-fw-tags">
+                        <span class="svc-fw-tag">Clear Aligners</span>
+                        <span class="svc-fw-tag">Digital Planning</span>
+                        <span class="svc-fw-tag">All Ages</span>
+                    </div>
+                    <div class="svc-fw-detail">
+                        <div class="svc-fw-steps">
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">1</div><span>Digital scan &amp; 3D simulation</span>
+                            </div>
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">2</div><span>Aligner fitting &amp; activation</span>
+                            </div>
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">3</div><span>Monthly progress check-ins</span>
+                            </div>
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">4</div><span>Retainer fitting for lasting results</span>
+                            </div>
+                        </div>
+                        <a href="#contact" class="svc-fw-cta">Start Journey <span class="arr">→</span></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 05 Scaling & Cleaning -->
+            <div class="svc-fw-card sa up" data-d="1">
+                <div class="svc-fw-inner">
+                    <div class="svc-fw-num">05</div>
+                    <div class="svc-fw-ico">🪥</div>
+                    <div class="svc-fw-name">Scaling &amp; Cleaning</div>
+                    <div class="svc-fw-desc">Deep ultrasonic scaling removes hardened plaque below the gumline.
+                        Recommended every 6 months.</div>
+                    <div class="svc-fw-tags">
+                        <span class="svc-fw-tag">Ultrasonic</span>
+                        <span class="svc-fw-tag">30 Min</span>
+                        <span class="svc-fw-tag">Gum Protection</span>
+                    </div>
+                    <div class="svc-fw-detail">
+                        <div class="svc-fw-steps">
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">1</div><span>Plaque &amp; tartar assessment</span>
+                            </div>
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">2</div><span>Ultrasonic scaling above &amp; below
+                                    gumline</span>
+                            </div>
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">3</div><span>Hand scaling for precision areas</span>
+                            </div>
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">4</div><span>Polish &amp; fluoride application</span>
+                            </div>
+                        </div>
+                        <a href="#contact" class="svc-fw-cta">Book Cleaning <span class="arr">→</span></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 06 Root Canal -->
+            <div class="svc-fw-card sa up" data-d="2">
+                <div class="svc-fw-inner">
+                    <div class="svc-fw-num">06</div>
+                    <div class="svc-fw-ico">💉</div>
+                    <div class="svc-fw-name">Root Canal</div>
+                    <div class="svc-fw-desc">Modern painless root canal using rotary instruments — saving your natural
+                        tooth in a single visit.</div>
+                    <div class="svc-fw-tags">
+                        <span class="svc-fw-tag">Single Visit</span>
+                        <span class="svc-fw-tag">Zero Pain</span>
+                        <span class="svc-fw-tag">Saves Tooth</span>
+                    </div>
+                    <div class="svc-fw-detail">
+                        <div class="svc-fw-steps">
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">1</div><span>X-ray diagnosis &amp; anaesthesia</span>
+                            </div>
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">2</div><span>Pulp chamber access &amp; removal</span>
+                            </div>
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">3</div><span>Canal shaping with rotary files</span>
+                            </div>
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">4</div><span>Gutta-percha seal &amp; crown</span>
+                            </div>
+                        </div>
+                        <a href="#contact" class="svc-fw-cta">Emergency Booking <span class="arr">→</span></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 07 Crowns & Bridges -->
+            <div class="svc-fw-card sa up" data-d="3">
+                <div class="svc-fw-inner">
+                    <div class="svc-fw-num">07</div>
+                    <div class="svc-fw-ico">👑</div>
+                    <div class="svc-fw-name">Crowns &amp; Bridges</div>
+                    <div class="svc-fw-desc">Lab-crafted zirconia crowns colour-matched perfectly — no metal edges, no
+                        dark gum lines. 10-year guarantee.</div>
+                    <div class="svc-fw-tags">
+                        <span class="svc-fw-tag">Zirconia</span>
+                        <span class="svc-fw-tag">Colour Matched</span>
+                        <span class="svc-fw-tag">10-Yr Guarantee</span>
+                    </div>
+                    <div class="svc-fw-detail">
+                        <div class="svc-fw-steps">
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">1</div><span>Tooth prep &amp; shade matching</span>
+                            </div>
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">2</div><span>Digital impression for lab</span>
+                            </div>
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">3</div><span>Temporary crown placement</span>
+                            </div>
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">4</div><span>Permanent zirconia cementation</span>
+                            </div>
+                        </div>
+                        <a href="#contact" class="svc-fw-cta">Crown Consult <span class="arr">→</span></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 08 Kids Dentistry -->
+            <div class="svc-fw-card sa up" data-d="4">
+                <div class="svc-fw-inner">
+                    <div class="svc-fw-num">08</div>
+                    <div class="svc-fw-ico">👶</div>
+                    <div class="svc-fw-name">Kids Dentistry</div>
+                    <div class="svc-fw-desc">Gentle, fun dental care from the very first visit. Dr. Koli builds trust so
+                        children grow up loving dentistry.</div>
+                    <div class="svc-fw-tags">
+                        <span class="svc-fw-tag">Child-Friendly</span>
+                        <span class="svc-fw-tag">Anxiety-Free</span>
+                        <span class="svc-fw-tag">Age 2+</span>
+                    </div>
+                    <div class="svc-fw-detail">
+                        <div class="svc-fw-steps">
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">1</div><span>Fun introductory show &amp; tell</span>
+                            </div>
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">2</div><span>Gentle examination &amp; cleaning</span>
+                            </div>
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">3</div><span>Fissure sealants &amp; fluoride varnish</span>
+                            </div>
+                            <div class="svc-fw-step">
+                                <div class="svc-fw-step-n">4</div><span>Parent guidance on home care</span>
+                            </div>
+                        </div>
+                        <a href="#contact" class="svc-fw-cta">Book Kids Visit <span class="arr">→</span></a>
+                    </div>
+                </div>
+            </div>
+
         </div>
+
+
+
     </section>
 
     <!-- ═══════════════ REVIEWS ═══════════════ -->
@@ -4292,38 +5056,38 @@
         </div>
         <div class="gallery-grid">
             <div class="gimg sa left" data-d="1" style="grid-row:1/3">
-                <div class="gimg-inner gi1"><img src="LOBBY.JPG" alt="Reception &amp; Lobby"
+                <div class="gimg-inner gi1"><img src="FULLCLINIC.JPG" alt="Full Clinic"
                         style="width:100%;height:100%;object-fit:cover;display:block;"></div>
                 <div class="gimg-overlay">
-                    <div class="gimg-label">Reception &amp; Lobby</div>
+                    <div class="gimg-label">Our Clinic</div>
                 </div>
             </div>
             <div class="gimg sa up" data-d="2">
-                <div class="gimg-inner gi2"><img src="CHAIR.JPG" alt="Treatment Suite"
+                <div class="gimg-inner gi2"><img src="CHAIR.JPG" alt="Treatment Chair"
                         style="width:100%;height:100%;object-fit:cover;display:block;"></div>
                 <div class="gimg-overlay">
                     <div class="gimg-label">Treatment Suite</div>
                 </div>
             </div>
             <div class="gimg sa up" data-d="3">
-                <div class="gimg-inner gi3"><img src="CLINIC_2.JPG" alt="Digital X-Ray"
+                <div class="gimg-inner gi3"><img src="RECEPTION.JPG" alt="Reception"
                         style="width:100%;height:100%;object-fit:cover;display:block;"></div>
                 <div class="gimg-overlay">
-                    <div class="gimg-label">Digital X-Ray</div>
+                    <div class="gimg-label">Reception</div>
                 </div>
             </div>
             <div class="gimg sa up" data-d="4">
-                <div class="gimg-inner gi4"><img src="MEDICATION.JPG" alt="Sterilisation Room"
+                <div class="gimg-inner gi4"><img src="MEDICATION.JPG" alt="Medication"
                         style="width:100%;height:100%;object-fit:cover;display:block;"></div>
                 <div class="gimg-overlay">
                     <div class="gimg-label">Sterilisation Room</div>
                 </div>
             </div>
             <div class="gimg sa up" data-d="5">
-                <div class="gimg-inner gi5"><img src="RECEPTION.JPG" alt="Smile Studio"
+                <div class="gimg-inner gi5"><img src="LOBBY.JPG" alt="Lobby"
                         style="width:100%;height:100%;object-fit:cover;display:block;"></div>
                 <div class="gimg-overlay">
-                    <div class="gimg-label">Smile Studio</div>
+                    <div class="gimg-label">Lobby</div>
                 </div>
             </div>
         </div>
@@ -4526,11 +5290,7 @@
         <div class="footer-grid">
             <div class="footer-brand">
                 <div class="nav-logo">
-                    <div class="nav-logo-mark"><svg viewBox="0 0 24 24" fill="white">
-                            <path
-                                d="M12 2C9 2 6 4.5 6 7.5c0 2 .8 3.5 1.5 4.7l.8 4c.4 1.6.8 3.3 2 3.3s1.6-1.2 2-2.4c.4 1.2.8 2.4 2 2.4s1.6-1.7 2-3.3l.8-4c.7-1.2 1.5-2.7 1.5-4.7 0-3-3-5.5-6-5.5z" />
-                        </svg></div>
-                    <div class="nav-brand" style="color:white;">DENTAL <b style="color:var(--pg);">ENCLAVE</b></div>
+                    <img src="LOGO2.png" alt="Dental Enclave" style="height:48px;width:auto;display:block;">
                 </div>
                 <p>Your trusted dental partner in Malad West, Mumbai. Expert care, gentle hands, and the smile you
                     deserve.</p>
@@ -4597,14 +5357,24 @@
             }, 1400);
         });
 
-        /* ── NAV ── */
+        /* ── NAV SCROLL ── */
         window.addEventListener('scroll', () => {
             document.getElementById('nav').classList.toggle('solid', scrollY > 40);
         });
 
+        /* ── SCROLL TO TOP ON LOAD ── */
+        if (history.scrollRestoration) history.scrollRestoration = 'manual';
+        window.scrollTo(0, 0);
+
         /* ── MOBILE MENU ── */
-        function openMob() { document.getElementById('mob-menu').classList.add('open'); }
-        function closeMob() { document.getElementById('mob-menu').classList.remove('open'); }
+        function openMob() {
+            document.getElementById('mob-menu').classList.add('open');
+            document.querySelector('.nav-ham').classList.add('active');
+        }
+        function closeMob() {
+            document.getElementById('mob-menu').classList.remove('open');
+            document.querySelector('.nav-ham').classList.remove('active');
+        }
 
         /* ── SCROLL REVEAL ── */
         const saObs = new IntersectionObserver(entries => {
@@ -4681,21 +5451,29 @@
                 svcPills.forEach(p => p.classList.remove('active'));
                 pill.classList.add('active');
                 activeSvcIdx = i;
-                svcDetailCard.style.transition = 'none';
+
+                // Slide out current
+                svcDetailCard.style.transition = 'opacity .18s ease, transform .18s ease';
                 svcDetailCard.style.opacity = '0';
-                svcDetailCard.style.transform = 'translateY(10px)';
+                svcDetailCard.style.transform = 'translateX(-16px)';
+
                 setTimeout(() => {
                     renderSvcDetail(i);
-                    svcDetailCard.style.transition = 'opacity .35s ease, transform .35s ease';
+                    svcDetailCard.style.transition = 'none';
                     svcDetailCard.style.opacity = '1';
-                    svcDetailCard.style.transform = 'translateY(0)';
-                }, 180);
+                    svcDetailCard.style.transform = 'none';
+                    // Trigger stagger animations
+                    svcDetailCard.classList.remove('sdc-animating');
+                    void svcDetailCard.offsetWidth; // reflow
+                    svcDetailCard.classList.add('sdc-animating');
+                }, 190);
             });
         });
 
         renderSvcDetail(0);
         svcDetailCard.style.opacity = '1';
-        svcDetailCard.style.transform = 'translateY(0)';
+        svcDetailCard.style.transform = 'none';
+        svcDetailCard.classList.add('sdc-animating');
 
         /* ── BOOKING FORM ── */
         const bkDateEl = document.getElementById('bk-date');
