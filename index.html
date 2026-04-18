@@ -133,7 +133,7 @@
             background: var(--cream);
             color: var(--dark);
             overflow-x: hidden;
-            cursor: none;
+            cursor: auto;
         }
 
         ::selection {
@@ -168,7 +168,7 @@
             border: none;
             background: none;
             font-family: inherit;
-            cursor: none;
+            cursor: pointer;
         }
 
         /* ── NAV LOGO ── */
@@ -510,7 +510,7 @@
         }
 
         nav.solid .nav-links a {
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(20, 31, 20, 0.85);
         }
 
         .nav-links a::after {
@@ -557,40 +557,67 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 0;
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.22);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            transition: background .25s, border-color .25s;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.14);
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, .15), inset 0 1px 0 rgba(255, 255, 255, .2);
+            transition: background .3s var(--ease), border-color .3s, box-shadow .3s, transform .2s var(--ease);
             position: relative;
             cursor: pointer;
+            overflow: hidden;
+        }
+
+        /* Shimmer sweep on hover */
+        .nav-ham::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, .18) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform .5s ease;
+        }
+
+        .nav-ham:hover::before {
+            transform: translateX(100%);
         }
 
         nav.solid .nav-ham {
-            background: rgba(212, 118, 42, 0.1);
-            border-color: rgba(212, 118, 42, 0.25);
+            background: rgba(212, 118, 42, 0.12);
+            border-color: rgba(212, 118, 42, 0.32);
+            box-shadow: 0 4px 16px rgba(212, 118, 42, .12), inset 0 1px 0 rgba(255, 255, 255, .15);
         }
 
         .nav-ham:hover {
-            background: rgba(255, 255, 255, 0.22);
+            background: rgba(255, 255, 255, 0.24);
+            border-color: rgba(255, 255, 255, .45);
+            transform: scale(1.06);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, .2);
         }
 
         nav.solid .nav-ham:hover {
-            background: rgba(212, 118, 42, 0.18);
+            background: rgba(212, 118, 42, 0.22);
+            border-color: rgba(212, 118, 42, 0.55);
+            transform: scale(1.06);
         }
 
+        .nav-ham:active {
+            transform: scale(0.96);
+        }
+
+        /* The three bars */
         .nav-ham span {
             display: block;
-            width: 18px;
             height: 1.5px;
+            border-radius: 3px;
             background: white;
-            border-radius: 2px;
             position: absolute;
-            transition: transform .35s var(--ease), opacity .25s, width .3s var(--ease);
+            left: 50%;
+            transform-origin: center;
+            transition: transform .4s var(--ease), opacity .3s ease, width .35s var(--ease), background .25s;
         }
 
         nav.solid .nav-ham span {
@@ -598,219 +625,307 @@
         }
 
         .nav-ham span:nth-child(1) {
-            transform: translateY(-5px);
+            width: 20px;
+            transform: translateX(-50%) translateY(-6px);
         }
 
         .nav-ham span:nth-child(2) {
-            transform: translateY(0);
-            width: 12px;
-            margin-left: -3px;
+            width: 13px;
+            transform: translateX(-50%) translateY(0px);
+            margin-left: 2px;
+            /* slight offset for visual interest */
         }
 
         .nav-ham span:nth-child(3) {
-            transform: translateY(5px);
+            width: 20px;
+            transform: translateX(-50%) translateY(6px);
         }
 
-        /* Animated → X when menu open */
+        /* Active → clean X */
         .nav-ham.active span:nth-child(1) {
-            transform: translateY(0) rotate(45deg);
-            width: 18px;
+            width: 20px;
+            transform: translateX(-50%) translateY(0) rotate(45deg);
         }
 
         .nav-ham.active span:nth-child(2) {
             opacity: 0;
-            transform: translateX(-8px);
+            transform: translateX(-60%) scaleX(0);
         }
 
         .nav-ham.active span:nth-child(3) {
-            transform: translateY(0) rotate(-45deg);
-            width: 18px;
+            width: 20px;
+            transform: translateX(-50%) translateY(0) rotate(-45deg);
         }
 
-        /* ── MOBILE MENU OVERLAY ── */
+        /* ── MOBILE MENU — slide in from right ── */
         #mob-menu {
             position: fixed;
-            inset: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: min(88vw, 380px);
             z-index: 700;
-            background: var(--dark);
+            background: linear-gradient(160deg, #0e1a0e 0%, #141f14 60%, #1a200e 100%);
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            padding: 0 40px 40px;
+            padding: 0;
             opacity: 0;
             visibility: hidden;
-            clip-path: inset(0 0 100% 0);
-            transition: opacity .5s var(--ease), visibility .5s, clip-path .55s var(--ease);
+            transform: translateX(100%);
+            transition: transform .55s var(--ease), opacity .4s ease, visibility .55s;
             pointer-events: none;
             overflow: hidden;
+            box-shadow: -24px 0 80px rgba(0, 0, 0, .5);
         }
 
+        /* Ambient orbs */
         #mob-menu::before {
             content: '';
             position: absolute;
-            top: -120px;
-            right: -120px;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(212, 118, 42, .14) 0%, transparent 65%);
+            top: -80px;
+            right: -80px;
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(212, 118, 42, .18) 0%, transparent 65%);
             pointer-events: none;
+            z-index: 0;
         }
 
         #mob-menu::after {
             content: '';
             position: absolute;
-            bottom: -80px;
-            left: -80px;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(245, 192, 154, .1) 0%, transparent 65%);
+            bottom: -60px;
+            left: -60px;
+            width: 260px;
+            height: 260px;
+            background: radial-gradient(circle, rgba(61, 122, 61, .12) 0%, transparent 65%);
             pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Backdrop dimmer — covers left part of screen */
+        #mob-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 699;
+            background: rgba(0, 0, 0, .55);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .45s ease, visibility .45s;
+            pointer-events: none;
+        }
+
+        #mob-backdrop.open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: all;
         }
 
         #mob-menu.open {
             opacity: 1;
             visibility: visible;
-            clip-path: inset(0 0 0% 0);
+            transform: translateX(0);
             pointer-events: all;
         }
 
-        /* Top bar inside menu */
+        /* ── Header strip inside panel ── */
         .mob-menu-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 0 48px;
+            padding: 20px 28px 20px;
             position: relative;
             z-index: 2;
+            border-bottom: 1px solid rgba(255, 255, 255, .06);
+            flex-shrink: 0;
         }
 
         .mob-menu-brand {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1rem;
+            font-size: .95rem;
             font-weight: 600;
-            color: rgba(255, 255, 255, .5);
-            letter-spacing: .08em;
+            color: rgba(255, 255, 255, .45);
+            letter-spacing: .1em;
             text-transform: uppercase;
         }
 
         #mob-close {
-            width: 40px;
-            height: 40px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
-            border: 1px solid rgba(255, 255, 255, .15);
+            border: 1px solid rgba(255, 255, 255, .14);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: rgba(255, 255, 255, .6);
-            font-size: .9rem;
+            color: rgba(255, 255, 255, .5);
+            font-size: .85rem;
             cursor: pointer;
-            transition: all .25s;
-            background: none;
+            transition: all .25s var(--ease);
+            background: rgba(255, 255, 255, .04);
             position: static;
         }
 
         #mob-close:hover {
             border-color: var(--po4);
             color: var(--po);
-            background: rgba(212, 118, 42, .1);
+            background: rgba(212, 118, 42, .14);
+            transform: rotate(90deg) scale(1.08);
         }
 
-        /* Nav links */
+        /* ── Nav links ── */
         .mob-nav-links {
             display: flex;
             flex-direction: column;
             gap: 0;
             position: relative;
             z-index: 2;
+            flex: 1;
+            padding: 12px 0;
+            overflow-y: auto;
         }
 
         .mob-nav-links a {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(2.4rem, 9vw, 3.8rem);
+            font-size: clamp(1.7rem, 6.5vw, 2.2rem);
             font-weight: 300;
-            color: rgba(255, 255, 255, .35);
-            line-height: 1.2;
+            color: rgba(255, 255, 255, .32);
+            line-height: 1;
             letter-spacing: -.01em;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, .05);
+            padding: 18px 28px;
+            border-bottom: 1px solid rgba(255, 255, 255, .045);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            transition: color .3s var(--ease), padding-left .3s var(--ease);
+            gap: 12px;
             text-decoration: none;
             opacity: 0;
-            transform: translateY(24px);
-            transition: color .3s, padding-left .3s, opacity .5s var(--ease), transform .5s var(--ease);
+            transform: translateX(28px);
+            transition: color .3s var(--ease), background .25s, opacity .5s var(--ease), transform .5s var(--ease);
+            position: relative;
+        }
+
+        /* Hover fill */
+        .mob-nav-links a::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(212, 118, 42, .08), transparent);
+            opacity: 0;
+            transition: opacity .3s;
+        }
+
+        .mob-nav-links a:hover::before {
+            opacity: 1;
         }
 
         #mob-menu.open .mob-nav-links a:nth-child(1) {
             opacity: 1;
             transform: none;
-            transition-delay: .12s;
+            transition-delay: .10s;
         }
 
         #mob-menu.open .mob-nav-links a:nth-child(2) {
             opacity: 1;
             transform: none;
-            transition-delay: .18s;
+            transition-delay: .16s;
         }
 
         #mob-menu.open .mob-nav-links a:nth-child(3) {
             opacity: 1;
             transform: none;
-            transition-delay: .24s;
+            transition-delay: .22s;
         }
 
         #mob-menu.open .mob-nav-links a:nth-child(4) {
             opacity: 1;
             transform: none;
-            transition-delay: .30s;
+            transition-delay: .28s;
         }
 
         #mob-menu.open .mob-nav-links a:nth-child(5) {
             opacity: 1;
             transform: none;
-            transition-delay: .36s;
+            transition-delay: .34s;
         }
 
         .mob-nav-links a:hover {
-            color: white;
-            padding-left: 8px;
+            color: rgba(255, 255, 255, .88);
         }
 
+        /* Item index number */
+        .mob-link-num {
+            font-family: 'DM Sans', sans-serif;
+            font-size: .55rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+            color: rgba(255, 255, 255, .18);
+            align-self: flex-start;
+            margin-top: 6px;
+            flex-shrink: 0;
+            min-width: 20px;
+            transition: color .3s;
+        }
+
+        .mob-nav-links a:hover .mob-link-num {
+            color: var(--po4);
+        }
+
+        .mob-link-label {
+            flex: 1;
+        }
+
+        /* Arrow */
+        .mob-link-arrow {
+            font-size: .9rem;
+            color: rgba(255, 255, 255, .16);
+            transition: color .25s, transform .3s var(--ease);
+            flex-shrink: 0;
+        }
+
+        .mob-nav-links a:hover .mob-link-arrow {
+            color: var(--po4);
+            transform: translateX(5px);
+        }
+
+        /* Last item = CTA */
         .mob-nav-links a:last-child {
             color: var(--po);
             border-bottom: none;
+            margin: 8px 16px 8px;
+            border-radius: 14px;
+            border: 1.5px solid rgba(212, 118, 42, .3);
+            background: rgba(212, 118, 42, .1);
+            padding: 18px 20px;
+        }
+
+        .mob-nav-links a:last-child::before {
+            display: none;
         }
 
         .mob-nav-links a:last-child:hover {
             color: white;
+            background: rgba(212, 118, 42, .22);
+            border-color: rgba(212, 118, 42, .55);
         }
 
-        .mob-link-arrow {
-            font-size: 1rem;
-            opacity: .3;
-            transition: opacity .25s, transform .25s var(--ease);
+        .mob-nav-links a:last-child .mob-link-num {
+            color: rgba(212, 118, 42, .4);
         }
 
-        .mob-nav-links a:hover .mob-link-arrow {
-            opacity: 1;
-            transform: translateX(6px);
-        }
-
-        /* Bottom info strip */
+        /* ── Footer strip ── */
         .mob-menu-footer {
-            margin-top: 40px;
-            padding-top: 24px;
-            border-top: 1px solid rgba(255, 255, 255, .07);
+            padding: 20px 28px 32px;
+            border-top: 1px solid rgba(255, 255, 255, .06);
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
             position: relative;
             z-index: 2;
+            flex-shrink: 0;
             opacity: 0;
-            transform: translateY(12px);
-            transition: opacity .5s var(--ease) .42s, transform .5s var(--ease) .42s;
+            transform: translateY(10px);
+            transition: opacity .5s var(--ease) .38s, transform .5s var(--ease) .38s;
         }
 
         #mob-menu.open .mob-menu-footer {
@@ -821,21 +936,51 @@
         .mob-footer-contact {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
         }
 
         .mob-footer-label {
-            font-size: .6rem;
+            font-size: .58rem;
             letter-spacing: .16em;
             text-transform: uppercase;
-            color: rgba(255, 255, 255, .28);
+            color: rgba(255, 255, 255, .25);
             font-weight: 700;
         }
 
         .mob-footer-val {
-            font-size: .85rem;
-            color: rgba(255, 255, 255, .55);
+            font-size: .8rem;
+            color: rgba(255, 255, 255, .5);
             text-decoration: none;
+        }
+
+        /* WhatsApp quick-action in footer */
+        .mob-wa-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(37, 211, 102, .15);
+            border: 1px solid rgba(37, 211, 102, .3);
+            border-radius: 30px;
+            padding: 8px 14px;
+            font-size: .72rem;
+            font-weight: 600;
+            color: #4ddb80;
+            text-decoration: none;
+            transition: all .25s var(--ease);
+        }
+
+        .mob-wa-btn:hover {
+            background: rgba(37, 211, 102, .25);
+            border-color: rgba(37, 211, 102, .55);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .mob-wa-btn svg {
+            width: 15px;
+            height: 15px;
+            fill: currentColor;
+            flex-shrink: 0;
         }
 
         .mob-footer-tag {
@@ -2510,12 +2655,14 @@
             font-size: 1rem;
             color: rgba(255, 255, 255, .5);
             transition: all .2s;
-            cursor: none;
+            cursor: pointer;
         }
 
         .rev-btn:hover {
             border-color: var(--po);
             color: var(--po);
+            background: rgba(245, 192, 154, .1);
+            transform: scale(1.08);
         }
 
         /* Trust bar at top */
@@ -2792,7 +2939,7 @@
             font-size: 1rem;
             color: rgba(255, 255, 255, .5);
             transition: all .2s;
-            cursor: none;
+            cursor: pointer;
         }
 
         /* ══════════════════════════════════════
@@ -3543,7 +3690,7 @@
        BOOKING + VISIT — Cleaner 2-col
     ══════════════════════════════════════ */
         #contact {
-            background: var(--pg3);
+            background: var(--dark2);
             padding: 120px 64px;
             position: relative;
             overflow: hidden;
@@ -3556,7 +3703,7 @@
             right: -200px;
             width: 600px;
             height: 600px;
-            background: radial-gradient(circle, rgba(168, 212, 168, .25), transparent 70%);
+            background: radial-gradient(circle, rgba(212, 118, 42, .12), transparent 70%);
             pointer-events: none;
         }
 
@@ -3567,7 +3714,7 @@
             left: -100px;
             width: 450px;
             height: 450px;
-            background: radial-gradient(circle, rgba(245, 192, 154, .15), transparent 70%);
+            background: radial-gradient(circle, rgba(61, 122, 61, .1), transparent 70%);
             pointer-events: none;
         }
 
@@ -3576,11 +3723,11 @@
         }
 
         .contact-head .eyebrow {
-            color: var(--po2);
+            color: var(--po);
         }
 
         .contact-head .eyebrow::before {
-            background: var(--po2);
+            background: var(--po);
         }
 
         .contact-head .sec-title {
@@ -3588,7 +3735,7 @@
         }
 
         .contact-head .sec-sub {
-            color: rgba(255, 255, 255, .38);
+            color: rgba(255, 255, 255, .45);
         }
 
         /* 2-col: form left, info right */
@@ -3707,7 +3854,7 @@
             font-size: .85rem;
             font-weight: 700;
             letter-spacing: .04em;
-            cursor: none;
+            cursor: pointer;
             transition: all .25s var(--ease);
             margin-top: 6px;
         }
@@ -3812,51 +3959,70 @@
             display: flex;
             align-items: center;
             gap: 14px;
-            padding: 13px 16px;
+            padding: 15px 18px;
             background: rgba(255, 255, 255, .04);
-            border: 1px solid rgba(255, 255, 255, .07);
+            border: 1.5px solid rgba(255, 255, 255, .12);
             border-radius: 14px;
             transition: all .25s var(--ease);
             text-decoration: none;
             color: white;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
         }
 
         /* WhatsApp gets a green tint */
         .bk-opt.bk-opt-wa {
-            background: rgba(37, 211, 102, .07);
-            border-color: rgba(37, 211, 102, .18);
+            background: rgba(37, 211, 102, .10);
+            border-color: rgba(37, 211, 102, .30);
+            box-shadow: 0 0 0 0 rgba(37, 211, 102, .25);
+            animation: waPulse 2.4s ease-in-out infinite;
+        }
+
+        @keyframes waPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, .25);
+            }
+
+            50% {
+                box-shadow: 0 0 0 6px rgba(37, 211, 102, 0);
+            }
         }
 
         .bk-opt.bk-opt-wa:hover {
-            background: rgba(37, 211, 102, .14);
-            border-color: rgba(37, 211, 102, .32);
-            transform: translateX(4px);
+            background: rgba(37, 211, 102, .20);
+            border-color: rgba(37, 211, 102, .55);
+            transform: translateX(5px);
+            box-shadow: 0 6px 24px rgba(37, 211, 102, .25);
+            animation: none;
         }
 
         /* Practo gets an orange tint */
         .bk-opt.bk-opt-practo {
-            background: rgba(212, 118, 42, .08);
-            border-color: rgba(212, 118, 42, .2);
+            background: rgba(212, 118, 42, .10);
+            border-color: rgba(212, 118, 42, .28);
         }
 
         .bk-opt.bk-opt-practo:hover {
-            background: rgba(212, 118, 42, .16);
-            border-color: rgba(212, 118, 42, .35);
-            transform: translateX(4px);
+            background: rgba(212, 118, 42, .20);
+            border-color: rgba(212, 118, 42, .55);
+            transform: translateX(5px);
+            box-shadow: 0 6px 24px rgba(212, 118, 42, .2);
         }
 
         /* Call gets a blue tint */
         .bk-opt.bk-opt-call {
-            background: rgba(100, 160, 255, .07);
-            border-color: rgba(100, 160, 255, .15);
+            background: rgba(100, 160, 255, .09);
+            border-color: rgba(100, 160, 255, .22);
         }
 
         .bk-opt.bk-opt-call:hover {
-            background: rgba(100, 160, 255, .13);
-            border-color: rgba(100, 160, 255, .28);
-            transform: translateX(4px);
+            background: rgba(100, 160, 255, .18);
+            border-color: rgba(100, 160, 255, .45);
+            transform: translateX(5px);
+            box-shadow: 0 6px 24px rgba(100, 160, 255, .2);
         }
 
         .bk-opt-ico {
@@ -3904,14 +4070,15 @@
 
         .bk-opt-arr {
             margin-left: auto;
-            font-size: .85rem;
-            color: rgba(255, 255, 255, .25);
-            transition: transform .2s, color .2s;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, .45);
+            transition: transform .2s var(--ease), color .2s;
             flex-shrink: 0;
+            font-weight: 700;
         }
 
         .bk-opt:hover .bk-opt-arr {
-            transform: translateX(5px);
+            transform: translateX(6px);
             color: white;
         }
 
@@ -4097,7 +4264,7 @@
             font-family: 'DM Sans', sans-serif;
             outline: none;
             transition: border-color .2s, background .2s;
-            cursor: none;
+            cursor: text;
             appearance: none;
             -webkit-appearance: none;
         }
@@ -4147,10 +4314,7 @@
             font-size: .85rem;
             font-weight: 700;
             letter-spacing: .04em;
-            cursor: none;
-            transition: all .28s var(--ease);
-            margin-top: 6px;
-            border: none;
+            cursor: pointer;
         }
 
         .bk-submit:hover {
@@ -4861,28 +5025,55 @@
         <div class="pl-sub">Dr. Kanchan Koli · Malad West, Mumbai</div>
     </div>
 
-    <!-- MOBILE MENU -->
+    <!-- BACKDROP -->
+    <div id="mob-backdrop" onclick="closeMob()"></div>
+
+    <!-- MOBILE MENU PANEL -->
     <div id="mob-menu">
         <div class="mob-menu-top">
             <span class="mob-menu-brand">Dental Enclave</span>
-            <button id="mob-close" onclick="closeMob()">✕</button>
+            <button id="mob-close" onclick="closeMob()" aria-label="Close menu">✕</button>
         </div>
         <nav class="mob-nav-links">
-            <a href="#hero" onclick="closeMob()">Home <span class="mob-link-arrow">→</span></a>
-            <a href="#services" onclick="closeMob()">Services <span class="mob-link-arrow">→</span></a>
-            <a href="#reviews" onclick="closeMob()">Reviews <span class="mob-link-arrow">→</span></a>
-            <a href="#doctor" onclick="closeMob()">About <span class="mob-link-arrow">→</span></a>
-            <a href="#contact" onclick="closeMob()">Book Appointment <span class="mob-link-arrow">→</span></a>
+            <a href="#hero" onclick="closeMob()">
+                <span class="mob-link-num">01</span>
+                <span class="mob-link-label">Home</span>
+                <span class="mob-link-arrow">→</span>
+            </a>
+            <a href="#services" onclick="closeMob()">
+                <span class="mob-link-num">02</span>
+                <span class="mob-link-label">Services</span>
+                <span class="mob-link-arrow">→</span>
+            </a>
+            <a href="#reviews" onclick="closeMob()">
+                <span class="mob-link-num">03</span>
+                <span class="mob-link-label">Reviews</span>
+                <span class="mob-link-arrow">→</span>
+            </a>
+            <a href="#doctor" onclick="closeMob()">
+                <span class="mob-link-num">04</span>
+                <span class="mob-link-label">About Dr. Koli</span>
+                <span class="mob-link-arrow">→</span>
+            </a>
+            <a href="#contact" onclick="closeMob()">
+                <span class="mob-link-num">05</span>
+                <span class="mob-link-label">Book Appointment</span>
+                <span class="mob-link-arrow">→</span>
+            </a>
         </nav>
         <div class="mob-menu-footer">
             <div class="mob-footer-contact">
                 <span class="mob-footer-label">Location</span>
                 <span class="mob-footer-val">Malad West, Mumbai</span>
             </div>
-            <div class="mob-footer-contact" style="text-align:right">
-                <span class="mob-footer-label">Hours</span>
-                <span class="mob-footer-val">Mon – Sun · 9AM – 7PM</span>
-            </div>
+            <a href="https://wa.me/919167310997?text=Hi%20Dr.%20Kanchan%2C%20I%20would%20like%20to%20book%20an%20appointment."
+                target="_blank" class="mob-wa-btn">
+                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M16 3C9.373 3 4 8.373 4 15c0 2.385.832 4.584 2.214 6.337L4.5 28l6.81-1.698A11.937 11.937 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16 3zm-2.39 8.25c-.222 0-.58.083-.884.41-.303.327-1.158 1.132-1.158 2.76 0 1.63 1.185 3.204 1.35 3.426.166.222 2.317 3.54 5.62 4.82.785.307 1.396.49 1.873.627.787.228 1.504.196 2.07.119.632-.086 1.946-.796 2.221-1.564.276-.768.276-1.428.193-1.565-.083-.138-.304-.222-.637-.388-.332-.166-1.967-.97-2.271-1.08-.304-.11-.525-.166-.747.166-.222.332-.858 1.08-1.052 1.302-.194.222-.39.25-.72.084-.332-.166-1.401-.517-2.669-1.647-.986-.88-1.65-1.966-1.843-2.298-.194-.332-.02-.512.145-.678.15-.15.332-.39.498-.582.166-.194.222-.332.332-.554.111-.222.055-.416-.028-.582-.083-.166-.746-1.797-1.022-2.461-.27-.647-.545-.56-.747-.57a13.62 13.62 0 0 0-.637-.01z" />
+                </svg>
+                WhatsApp
+            </a>
         </div>
     </div>
 
@@ -5755,11 +5946,10 @@
                 <div class="bk-info-section">
                     <div class="bk-info-section-title">Find Us</div>
                     <div class="loc-map">
-                        <iframe src="<iframe src="
-                            https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3768.0395628798783!2d72.8448238752083!3d19.19347428203542!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b7c0ce7cf70f%3A0xa97f88458dfab118!2sDental%20Enclave%20By%20Dr.%20Kanchan%20Koli!5e0!3m2!1sen!2sin!4v1776502255505!5m2!1sen!2sin"
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3768.0395628798783!2d72.8448238752083!3d19.19347428203542!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b7c0ce7cf70f%3A0xa97f88458dfab118!2sDental%20Enclave%20By%20Dr.%20Kanchan%20Koli!5e0!3m2!1sen!2sin!4v1776502255505!5m2!1sen!2sin"
                             width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade"></iframe>"
-                        allowfullscreen loading="lazy" title="Dental Enclave Location"></iframe>
+                            referrerpolicy="no-referrer-when-downgrade" title="Dental Enclave Location"></iframe>
                     </div>
                     <div class="loc-address">
                         <strong>308, One World, SV Road</strong>
@@ -5863,11 +6053,15 @@
         /* ── MOBILE MENU ── */
         function openMob() {
             document.getElementById('mob-menu').classList.add('open');
+            document.getElementById('mob-backdrop').classList.add('open');
             document.querySelector('.nav-ham').classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
         function closeMob() {
             document.getElementById('mob-menu').classList.remove('open');
+            document.getElementById('mob-backdrop').classList.remove('open');
             document.querySelector('.nav-ham').classList.remove('active');
+            document.body.style.overflow = '';
         }
 
         /* ── SCROLL REVEAL ── */
