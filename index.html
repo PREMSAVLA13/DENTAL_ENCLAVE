@@ -3522,6 +3522,8 @@
             border-radius: 12px;
             padding: 12px 14px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+            min-width: 0;
+            overflow: hidden;
         }
 
         .bk-trust-ico {
@@ -3534,6 +3536,9 @@
             font-weight: 600;
             color: var(--grey);
             letter-spacing: .02em;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            min-width: 0;
         }
 
         /* Form card */
@@ -3543,6 +3548,9 @@
             border-radius: 20px;
             padding: 36px 32px;
             box-shadow: 0 4px 32px rgba(0, 0, 0, .07);
+            width: 100%;
+            min-width: 0;
+            overflow: hidden;
         }
 
         .bk-form-title {
@@ -3666,6 +3674,9 @@
             font-size: .68rem;
             color: var(--greyl);
             margin-top: 10px;
+            word-break: break-word;
+            white-space: normal;
+            overflow-wrap: break-word;
         }
 
         .bk-success {
@@ -3834,12 +3845,15 @@
         .bk-opt-body {
             flex: 1;
             min-width: 0;
+            overflow: hidden;
         }
 
         .bk-opt-title {
             font-weight: 700;
             font-size: .84rem;
             color: white;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
 
         .bk-opt-sub {
@@ -4137,6 +4151,9 @@
             text-transform: uppercase;
             color: var(--grey);
             margin-bottom: 20px;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
         }
 
         .loc-hours {
