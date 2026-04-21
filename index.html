@@ -286,160 +286,233 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 0;
             overflow: hidden;
         }
 
-        /* Soft ambient blobs */
+        /* Radial glow behind logo */
         #preloader::before {
             content: '';
             position: absolute;
-            top: -120px;
-            right: -120px;
-            width: 480px;
-            height: 480px;
-            background: radial-gradient(circle, rgba(245, 192, 154, .28) 0%, transparent 65%);
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(212, 118, 42, .10) 0%, rgba(61, 122, 61, .07) 45%, transparent 70%);
             pointer-events: none;
+            animation: plGlowPulse 3s ease-in-out infinite;
         }
 
+        /* Soft grain texture */
         #preloader::after {
             content: '';
             position: absolute;
-            bottom: -100px;
-            left: -100px;
-            width: 380px;
-            height: 380px;
-            background: radial-gradient(circle, rgba(200, 230, 200, .22) 0%, transparent 65%);
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            background-size: 180px;
+            pointer-events: none;
+            opacity: .5;
+        }
+
+        .pl-arc-wrap {
+            position: relative;
+            width: 330px;
+            height: 330px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .pl-arc-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            animation: plArcSpin 2.4s cubic-bezier(.4, 0, .2, 1) infinite;
             pointer-events: none;
         }
 
-        .pl-logo {
+        .pl-arc-track {
+            fill: none;
+            stroke: rgba(61, 122, 61, .10);
+            stroke-width: 1.5;
+        }
+
+        .pl-arc-fill {
+            fill: none;
+            stroke: url(#plGrad);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-dasharray: 420;
+            stroke-dashoffset: 420;
+            animation: plArcDraw 1.2s .3s cubic-bezier(.16, 1, .3, 1) forwards,
+                plArcPulse 2s 1.5s ease-in-out infinite;
+        }
+
+        .pl-outer-ring {
+            position: absolute;
+            inset: -36px;
+            border-radius: 50%;
+            border: 1px solid rgba(212, 118, 42, .15);
+            animation: plFadeIn .6s .8s ease forwards;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .pl-outer-ring::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--po4);
+            opacity: .7;
+            box-shadow: 0 0 8px rgba(212, 118, 42, .5);
+        }
+
+        .pl-outer-ring::after {
+            content: '';
+            position: absolute;
+            bottom: 18px;
+            left: 22px;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: var(--pg4);
+            opacity: .6;
+            box-shadow: 0 0 6px rgba(61, 122, 61, .5);
+        }
+
+        .pl-img-wrap {
+            position: relative;
+            z-index: 2;
+            opacity: 0;
+            transform: scale(.88);
+            animation: plLogoIn .8s .2s cubic-bezier(.16, 1, .3, 1) forwards;
+            overflow: hidden;
+        }
+
+        .pl-img-wrap::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, .55) 50%, transparent 70%);
+            transform: translateX(-100%);
+            animation: plShimmer .8s 1s ease forwards;
+        }
+
+        .pl-img-wrap img {
+            height: clamp(52px, 8vw, 80px);
+            width: auto;
+            display: block;
+            mix-blend-mode: multiply;
+        }
+
+        .pl-tagline {
+            margin-top: 40px;
+            text-align: center;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(12px);
+            animation: plFadeUp .6s 1s cubic-bezier(.16, 1, .3, 1) forwards;
+        }
+
+        .pl-tagline-main {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(2.4rem, 5vw, 4rem);
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
             font-weight: 300;
             color: var(--dark);
-            letter-spacing: .04em;
-            display: flex;
-            gap: .15em;
-            overflow: hidden;
+            letter-spacing: .06em;
+            font-style: italic;
+            margin-bottom: 8px;
         }
 
-        .pl-logo span {
-            display: inline-block;
-            transform: translateY(100%);
-            animation: plUp .7s var(--ease) forwards;
-        }
-
-        .pl-logo span:nth-child(1) {
-            animation-delay: .05s;
-        }
-
-        .pl-logo span:nth-child(2) {
-            animation-delay: .1s;
-        }
-
-        .pl-logo span:nth-child(3) {
-            animation-delay: .15s;
-        }
-
-        .pl-logo span:nth-child(4) {
-            animation-delay: .2s;
-        }
-
-        .pl-logo span:nth-child(5) {
-            animation-delay: .25s;
-        }
-
-        .pl-logo span:nth-child(6) {
-            animation-delay: .3s;
-        }
-
-        .pl-logo span:nth-child(7) {
-            animation-delay: .35s;
-            color: var(--po4);
-        }
-
-        .pl-logo span:nth-child(8) {
-            animation-delay: .4s;
-            color: var(--po4);
-        }
-
-        .pl-logo span:nth-child(9) {
-            animation-delay: .45s;
-            color: var(--po4);
-        }
-
-        .pl-logo span:nth-child(10) {
-            animation-delay: .5s;
-            color: var(--po4);
-        }
-
-        .pl-logo span:nth-child(11) {
-            animation-delay: .55s;
-            color: var(--po4);
-        }
-
-        .pl-logo span:nth-child(12) {
-            animation-delay: .6s;
-            color: var(--po4);
-        }
-
-        .pl-logo span:nth-child(13) {
-            animation-delay: .65s;
-            color: var(--po4);
-        }
-
-        .pl-bar-wrap {
-            width: 160px;
-            height: 2px;
-            background: rgba(61, 122, 61, .12);
-            margin-top: 32px;
-            overflow: hidden;
-            border-radius: 2px;
-            transform: translateY(20px);
-            opacity: 0;
-            animation: plFadeIn .4s .3s ease forwards;
-        }
-
-        .pl-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--pg4), var(--po4));
-            width: 0%;
-            animation: plBarFill 1s .4s var(--ease2) forwards;
-        }
-
-        .pl-sub {
-            font-size: .65rem;
-            letter-spacing: .18em;
+        .pl-tagline-sub {
+            font-size: .58rem;
+            letter-spacing: .22em;
             text-transform: uppercase;
             color: var(--grey);
-            margin-top: 14px;
-            transform: translateY(10px);
-            opacity: 0;
-            animation: plFadeIn .4s .5s ease forwards;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
-        @keyframes plUp {
+        .pl-tagline-sub::before,
+        .pl-tagline-sub::after {
+            content: '';
+            width: 24px;
+            height: 1px;
+            background: rgba(212, 118, 42, .4);
+        }
+
+        @keyframes plGlowPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.12);
+                opacity: .6;
+            }
+        }
+
+        @keyframes plArcSpin {
             to {
-                transform: translateY(0);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes plArcDraw {
+            to {
+                stroke-dashoffset: 60;
+            }
+        }
+
+        @keyframes plArcPulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: .4;
+            }
+        }
+
+        @keyframes plLogoIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes plShimmer {
+            to {
+                transform: translateX(100%);
             }
         }
 
         @keyframes plFadeIn {
             to {
                 opacity: 1;
+            }
+        }
+
+        @keyframes plFadeUp {
+            to {
+                opacity: 1;
                 transform: translateY(0);
             }
         }
 
-        @keyframes plBarFill {
-            to {
-                width: 100%;
-            }
-        }
-
         #preloader.hide {
-            animation: plHide .6s var(--ease) forwards;
+            animation: plHide .8s var(--ease) forwards;
         }
 
         @keyframes plHide {
@@ -450,7 +523,7 @@
 
             100% {
                 opacity: 0;
-                transform: scale(1.04);
+                transform: translateY(-16px);
                 visibility: hidden;
                 pointer-events: none;
             }
@@ -1359,138 +1432,11 @@
             box-shadow: 0 10px 28px rgba(212, 118, 42, .36);
         }
 
-        /* dcontact */
-        .dcontact {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 22px;
-            background: rgba(255, 255, 255, .85);
-            border-radius: 40px;
-            border: 1px solid rgba(61, 122, 61, .2);
-            font-size: .8rem;
-            font-weight: 600;
-            color: var(--dark);
-            transition: all .28s var(--ease);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, .06), inset 0 1px 0 rgba(255, 255, 255, .8);
-        }
+        /* dcontact — defined in doctor section below */
 
-        .dcontact::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, .35) 50%, transparent 65%);
-            transform: translateX(-100%);
-            transition: transform .55s ease;
-        }
+        /* loc-action-btn defined in contact section below */
 
-        .dcontact:hover::after {
-            transform: translateX(100%);
-        }
-
-        .dcontact:first-child {
-            background: linear-gradient(135deg, var(--po4) 0%, #e8872a 100%);
-            border-color: transparent;
-            color: white;
-            box-shadow: 0 4px 18px rgba(212, 118, 42, .28), inset 0 1px 0 rgba(255, 255, 255, .18);
-        }
-
-        .dcontact:first-child:hover {
-            background: linear-gradient(135deg, var(--dark) 0%, #1c2c1c 100%);
-            border-color: transparent;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 28px rgba(212, 118, 42, .36);
-        }
-
-        .dcontact:not(:first-child):hover {
-            background: rgba(255, 255, 255, 1);
-            border-color: rgba(212, 118, 42, .35);
-            color: var(--po4);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 22px rgba(0, 0, 0, .1);
-        }
-
-        /* loc-action-btn */
-        .loc-action-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 10px 18px;
-            border-radius: 40px;
-            background: rgba(255, 255, 255, .07);
-            border: 1px solid rgba(255, 255, 255, .14);
-            color: rgba(255, 255, 255, .7);
-            font-size: .76rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all .28s var(--ease);
-            position: relative;
-            overflow: hidden;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08);
-        }
-
-        .loc-action-btn::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, .12) 50%, transparent 65%);
-            transform: translateX(-100%);
-            transition: transform .55s ease;
-        }
-
-        .loc-action-btn:hover::after {
-            transform: translateX(100%);
-        }
-
-        .loc-action-btn:hover {
-            background: rgba(212, 118, 42, .18);
-            border-color: rgba(212, 118, 42, .4);
-            color: var(--po);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(212, 118, 42, .2);
-        }
-
-        /* rev-btn */
-        .rev-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: 1.5px solid rgba(255, 255, 255, .2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, .65);
-            transition: all .28s var(--ease);
-            cursor: pointer;
-            background: rgba(255, 255, 255, .06);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), 0 3px 12px rgba(0, 0, 0, .2);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .rev-btn::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, .14) 50%, transparent 65%);
-            transform: translateX(-100%);
-            transition: transform .55s ease;
-        }
-
-        .rev-btn:hover::after {
-            transform: translateX(100%);
-        }
-
-        .rev-btn:hover {
-            border-color: var(--po);
-            color: var(--po);
-            background: rgba(245, 192, 154, .14);
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(212, 118, 42, .28);
-        }
+        /* rev-btn defined in reviews section below */
 
         /* mob-wa-btn */
         .mob-wa-btn {
@@ -1894,6 +1840,10 @@
             background: linear-gradient(135deg, #2a1a4c, #140a30);
         }
 
+        .hbc-slide:nth-child(5) {
+            background: linear-gradient(135deg, #3a1a1a, #200a0a);
+        }
+
         .hbc-overlay {
             position: absolute;
             inset: 0;
@@ -1934,7 +1884,7 @@
         }
 
         .hbc-prog-item.active .hbc-prog-fill {
-            animation: progFill 2.5s linear forwards;
+            animation: progFill 3s linear forwards;
         }
 
         @keyframes progFill {
@@ -2201,8 +2151,14 @@
         }
 
         .svc-top-band .sec-sub {
-            color: var(--grey);
-            max-width: 340px;
+            color: var(--dark);
+            max-width: 360px;
+            font-size: .95rem;
+            line-height: 1.9;
+            font-weight: 400;
+            padding-left: 16px;
+            border-left: 2px solid var(--po4);
+            opacity: .72;
         }
 
         /* ── SERVICES GRID: full-width cards ── */
@@ -2679,9 +2635,10 @@
         /* ══════════════════════════════════════
        REVIEWS — Immersive attraction design
     ══════════════════════════════════════ */
+        /* ══ REVIEWS — Premium dark carousel ══ */
         #reviews {
-            background: var(--cream);
-            padding: 80px 64px;
+            background: var(--dark);
+            padding: 72px 64px;
             position: relative;
             overflow: hidden;
         }
@@ -2689,124 +2646,161 @@
         #reviews::before {
             content: '';
             position: absolute;
-            top: -200px;
-            right: -200px;
-            width: 700px;
-            height: 700px;
-            background: radial-gradient(circle, rgba(245, 192, 154, .15), transparent 65%);
+            top: -180px;
+            right: -180px;
+            width: 560px;
+            height: 560px;
+            background: radial-gradient(circle, rgba(212, 118, 42, .18), transparent 65%);
+            pointer-events: none;
+        }
+
+        #reviews::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 380px;
+            height: 380px;
+            background: radial-gradient(circle, rgba(61, 122, 61, .14), transparent 65%);
             pointer-events: none;
         }
 
         #reviews .eyebrow {
-            color: var(--po4);
+            color: var(--po);
         }
 
         #reviews .eyebrow::before {
-            background: var(--po4);
+            background: var(--po);
         }
 
         #reviews .sec-title {
-            color: var(--dark);
+            color: white;
         }
 
-        /* Header row: title left, score right */
+        /* Header row */
         .rev-header-row {
             display: flex;
             align-items: flex-end;
             justify-content: space-between;
             gap: 24px;
-            margin-bottom: 40px;
+            margin-bottom: 32px;
             flex-wrap: wrap;
         }
 
         .rev-score-inline {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .1);
+            border-radius: 14px;
+            padding: 12px 18px;
         }
 
         .rev-score-inline-num {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 3.2rem;
+            font-size: 2.8rem;
             font-weight: 300;
             line-height: 1;
-            color: var(--dark);
+            color: white;
         }
 
         .rev-stars-lg {
-            font-size: 1rem;
+            font-size: .9rem;
             color: #f5c249;
             letter-spacing: 3px;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         .rev-count-line {
-            font-size: .78rem;
-            color: var(--grey);
+            font-size: .73rem;
+            color: rgba(255, 255, 255, .4);
         }
 
         .rev-count-line b {
-            color: var(--po4);
+            color: var(--po);
             font-weight: 600;
         }
 
-        /* Solo carousel */
+        /* Carousel */
         .rev-solo-wrap {
-            max-width: 680px;
-            margin: 0 auto;
+            position: relative;
+        }
+
+        .rev-carousel-clip {
+            overflow: hidden;
+            border-radius: 20px;
+            cursor: grab;
+            user-select: none;
+        }
+
+        .rev-carousel-clip:active {
+            cursor: grabbing;
         }
 
         .rev-solo-stage {
+            display: grid;
             position: relative;
-            overflow: hidden;
-        }
-
-        .rev-solo-stage .rev-card {
-            display: none;
-            animation: revFadeIn .35s var(--ease) both;
-        }
-
-        .rev-solo-stage .rev-card.active {
-            display: block;
-        }
-
-        @keyframes revFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(12px);
-            }
-
-            to {
-                opacity: 1;
-                transform: none;
-            }
         }
 
         .rev-card {
-            background: white;
-            border: 1px solid rgba(61, 122, 61, .12);
-            border-radius: 18px;
-            padding: 28px 32px;
+            grid-area: 1 / 1;
+            background: rgba(255, 255, 255, .055);
+            border: 1px solid rgba(255, 255, 255, .09);
+            border-radius: 20px;
+            padding: 26px 26px 20px;
             position: relative;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, .06);
+            opacity: 0;
+            transform: translateX(32px);
+            pointer-events: none;
+            transition: opacity .45s cubic-bezier(.16, 1, .3, 1), transform .45s cubic-bezier(.16, 1, .3, 1), border-color .3s, background .3s;
+        }
+
+        .rev-card.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .rev-card.exit {
+            opacity: 0;
+            transform: translateX(-32px);
+        }
+
+        .rev-card:hover {
+            background: rgba(255, 255, 255, .09);
+            border-color: rgba(212, 118, 42, .3);
+        }
+
+        /* Decorative quote mark */
+        .rev-card::before {
+            content: '\201C';
+            position: absolute;
+            top: 8px;
+            right: 18px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 5rem;
+            line-height: 1;
+            color: rgba(212, 118, 42, .2);
+            pointer-events: none;
         }
 
         .rev-top {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 14px;
+            gap: 11px;
+            margin-bottom: 13px;
         }
 
         .rev-av {
-            width: 42px;
-            height: 42px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: .95rem;
+            font-size: .88rem;
             color: white;
             flex-shrink: 0;
             font-family: 'Cormorant Garamond', serif;
@@ -2814,28 +2808,28 @@
 
         .rev-name {
             font-weight: 600;
-            font-size: .85rem;
-            color: var(--dark);
+            font-size: .82rem;
+            color: white;
             line-height: 1.2;
         }
 
         .rev-via {
-            font-size: .65rem;
-            color: var(--grey);
+            font-size: .62rem;
+            color: rgba(255, 255, 255, .32);
             margin-top: 1px;
         }
 
         .rev-stars {
             color: #f5c249;
-            font-size: .8rem;
+            font-size: .75rem;
             margin-left: auto;
             letter-spacing: 1px;
         }
 
         .rev-text {
-            font-size: .88rem;
-            color: var(--grey);
-            line-height: 1.75;
+            font-size: .84rem;
+            color: rgba(255, 255, 255, .6);
+            line-height: 1.78;
             margin-bottom: 16px;
         }
 
@@ -2846,17 +2840,21 @@
         }
 
         .rev-date {
-            font-size: .67rem;
-            color: var(--greyl);
+            font-size: .63rem;
+            color: rgba(255, 255, 255, .25);
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .07);
+            border-radius: 20px;
+            padding: 3px 10px;
         }
 
         .rev-g-tag {
             background: #4285F4;
             color: white;
             font-weight: 800;
-            font-size: .65rem;
-            width: 20px;
-            height: 20px;
+            font-size: .62rem;
+            width: 19px;
+            height: 19px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -2867,261 +2865,63 @@
         .rev-solo-controls {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 24px;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .rev-controls-left {
+            display: flex;
+            gap: 10px;
         }
 
         .rev-btn {
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
-            border: 1.5px solid rgba(61, 122, 61, .25);
+            border: 1.5px solid rgba(255, 255, 255, .14);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: .95rem;
-            color: var(--dark);
+            color: rgba(255, 255, 255, .55);
             cursor: pointer;
+            background: rgba(255, 255, 255, .05);
             transition: all .2s;
-            background: white;
         }
 
         .rev-btn:hover {
             border-color: var(--po4);
             color: var(--po4);
-            background: rgba(245, 192, 154, .12);
+            background: rgba(212, 118, 42, .12);
             transform: scale(1.08);
         }
 
         .rev-dots {
             display: flex;
-            gap: 7px;
+            gap: 6px;
             align-items: center;
         }
 
         .rev-dot {
-            width: 7px;
-            height: 7px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            background: rgba(61, 122, 61, .2);
+            background: rgba(255, 255, 255, .18);
             transition: all .25s;
             cursor: pointer;
+            border: none;
         }
 
         .rev-dot.active {
             background: var(--po4);
-            transform: scale(1.3);
+            transform: scale(1.45);
         }
 
-        /* Featured quote hero */
-        .rev-hero-quote {
-            position: relative;
-            margin-bottom: 60px;
-            background: linear-gradient(135deg, rgba(212, 118, 42, .15), rgba(212, 118, 42, .05));
-            border: 1px solid rgba(200, 230, 200, .12);
-            border-radius: 24px;
-            padding: 48px 56px;
-            overflow: hidden;
-        }
-
-        .rev-hero-quote::before {
-            content: '"';
-            position: absolute;
-            top: -20px;
-            left: 24px;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 12rem;
-            line-height: 1;
-            color: rgba(200, 230, 200, .08);
-            pointer-events: none;
-        }
-
-        .rev-hero-text {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.4rem, 2.2vw, 2rem);
-            font-style: italic;
-            line-height: 1.5;
-            color: white;
-            max-width: 700px;
-            position: relative;
-            z-index: 1;
-            margin-bottom: 20px;
-        }
-
-        .rev-hero-author {
-            font-size: .8rem;
-            color: rgba(255, 255, 255, .4);
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .rev-hero-av {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--po4), var(--po4));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: .9rem;
-            color: white;
-            font-family: 'Cormorant Garamond', serif;
-            flex-shrink: 0;
-        }
-
-        .rev-hero-stars {
-            color: #f5c249;
-            font-size: .8rem;
-            margin-left: auto;
-            letter-spacing: 2px;
-        }
-
-        /* Cards */
-        .rev-slider-wrap {
-            overflow: hidden;
-            position: relative;
-            cursor: grab;
-        }
-
-        .rev-slider-wrap:active {
-            cursor: grabbing;
-        }
-
-        .rev-slider {
-            display: flex;
-            gap: 20px;
-            transition: transform .6s var(--ease);
-        }
-
-        .rev-card {
-            min-width: 320px;
-            background: white;
-            border: 1px solid rgba(61, 122, 61, .12);
-            border-radius: 18px;
-            padding: 28px;
-            flex-shrink: 0;
-            position: relative;
-            cursor: pointer;
-            transition: transform .35s var(--ease), box-shadow .35s, border-color .35s;
-        }
-
-        .rev-card:hover {
-            transform: translateY(-4px) scale(1.01);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, .10);
-            border-color: rgba(212, 118, 42, .25);
-        }
-
-        .rev-top {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .rev-av {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1rem;
-            color: white;
-            flex-shrink: 0;
-            font-family: 'Cormorant Garamond', serif;
-        }
-
-        .rev-name {
-            font-weight: 600;
-            font-size: .85rem;
-            color: var(--dark);
-        }
-
-        .rev-via {
-            font-size: .67rem;
-            color: var(--grey);
-        }
-
-        .rev-stars {
-            color: #f5c249;
-            font-size: .8rem;
-            margin-left: auto;
-        }
-
-        .rev-text {
-            font-size: .83rem;
-            color: var(--grey);
-            line-height: 1.75;
-            margin: 12px 0;
-        }
-
-        .rev-date {
-            font-size: .68rem;
-            color: var(--greyl);
-        }
-
-        .rev-g-tag {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            background: #4285F4;
-            color: white;
-            font-weight: 800;
+        .rev-counter {
             font-size: .7rem;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .rev-controls {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-top: 32px;
-        }
-
-        .rev-progress {
-            flex: 1;
-            height: 2px;
-            background: rgba(255, 255, 255, .1);
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .rev-progress-fill {
-            height: 100%;
-            background: var(--po4);
-            border-radius: 2px;
-            transition: width .5s var(--ease);
-        }
-
-        .rev-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: 1.5px solid rgba(61, 122, 61, .25);
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            color: var(--dark);
-            transition: all .2s;
-            cursor: pointer;
-        }
-
-        .rev-btn:hover {
-            border-color: var(--po4);
-            color: var(--po4);
-            background: rgba(245, 192, 154, .12);
-            transform: scale(1.08);
+            color: rgba(255, 255, 255, .28);
+            font-variant-numeric: tabular-nums;
+            letter-spacing: .06em;
         }
 
         /* ══════════════════════════════════════
@@ -3845,10 +3645,11 @@
             padding: 14px;
             border-radius: 12px;
             background: var(--po4);
-            color: white;
+            color: #ffffff;
             font-size: .85rem;
-            font-weight: 700;
-            letter-spacing: .04em;
+            font-weight: 800;
+            letter-spacing: .06em;
+            text-transform: uppercase;
             cursor: pointer;
             transition: all .25s var(--ease);
             margin-top: 6px;
@@ -3955,93 +3756,79 @@
             display: flex;
             align-items: center;
             gap: 14px;
-            padding: 15px 18px;
-            background: var(--pg3);
-            border: 1.5px solid rgba(61, 122, 61, .15);
-            border-radius: 14px;
+            padding: 15px 20px;
+            border-radius: 12px;
             transition: all .25s var(--ease);
             text-decoration: none;
-            color: var(--dark);
+            color: white;
             position: relative;
             overflow: hidden;
             cursor: pointer;
+            font-weight: 700;
+            font-size: .85rem;
+            letter-spacing: .02em;
+            border: none;
         }
 
-        /* WhatsApp gets a green tint */
+        /* shine sweep */
+        .bk-opt::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, .15) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform .45s var(--ease);
+        }
+
+        .bk-opt:hover::after {
+            transform: translateX(100%);
+        }
+
+        /* WhatsApp — green */
         .bk-opt.bk-opt-wa {
-            background: rgba(37, 211, 102, .08);
-            border-color: rgba(37, 211, 102, .30);
-            box-shadow: 0 0 0 0 rgba(37, 211, 102, .2);
-            animation: waPulse 2.4s ease-in-out infinite;
-        }
-
-        @keyframes waPulse {
-
-            0%,
-            100% {
-                box-shadow: 0 0 0 0 rgba(37, 211, 102, .2);
-            }
-
-            50% {
-                box-shadow: 0 0 0 6px rgba(37, 211, 102, 0);
-            }
+            background: #25D366;
+            box-shadow: 0 4px 18px rgba(37, 211, 102, .35);
         }
 
         .bk-opt.bk-opt-wa:hover {
-            background: rgba(37, 211, 102, .15);
-            border-color: rgba(37, 211, 102, .55);
-            transform: translateX(5px);
-            box-shadow: 0 6px 24px rgba(37, 211, 102, .2);
-            animation: none;
+            background: #1db954;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(37, 211, 102, .45);
         }
 
-        /* Practo gets an orange tint */
+        /* Practo — brand orange */
         .bk-opt.bk-opt-practo {
-            background: rgba(212, 118, 42, .07);
-            border-color: rgba(212, 118, 42, .22);
+            background: var(--po4);
+            box-shadow: 0 4px 18px rgba(212, 118, 42, .3);
         }
 
         .bk-opt.bk-opt-practo:hover {
-            background: rgba(212, 118, 42, .14);
-            border-color: rgba(212, 118, 42, .45);
-            transform: translateX(5px);
-            box-shadow: 0 6px 24px rgba(212, 118, 42, .15);
+            background: #c06820;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(212, 118, 42, .4);
         }
 
-        /* Call gets a blue tint */
+        /* Call — dark */
         .bk-opt.bk-opt-call {
-            background: rgba(66, 133, 244, .07);
-            border-color: rgba(66, 133, 244, .2);
+            background: var(--dark);
+            box-shadow: 0 4px 18px rgba(20, 31, 20, .25);
         }
 
         .bk-opt.bk-opt-call:hover {
-            background: rgba(66, 133, 244, .14);
-            border-color: rgba(66, 133, 244, .4);
-            transform: translateX(5px);
-            box-shadow: 0 6px 24px rgba(66, 133, 244, .15);
+            background: #0e160e;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(20, 31, 20, .38);
         }
 
         .bk-opt-ico {
-            width: 42px;
-            height: 42px;
-            border-radius: 12px;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
             flex-shrink: 0;
-        }
-
-        .bk-opt-wa .bk-opt-ico {
-            background: rgba(37, 211, 102, .12);
-        }
-
-        .bk-opt-practo .bk-opt-ico {
-            background: rgba(212, 118, 42, .12);
-        }
-
-        .bk-opt-call .bk-opt-ico {
-            background: rgba(66, 133, 244, .12);
+            background: rgba(255, 255, 255, .18);
         }
 
         .bk-opt-body {
@@ -4050,71 +3837,99 @@
         }
 
         .bk-opt-title {
-            font-weight: 600;
+            font-weight: 700;
             font-size: .84rem;
-            margin-bottom: 2px;
-            color: var(--dark);
+            color: white;
         }
 
         .bk-opt-sub {
-            font-size: .68rem;
-            color: var(--grey);
+            font-size: .67rem;
+            color: rgba(255, 255, 255, .75);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            font-weight: 400;
+            margin-top: 1px;
         }
 
         .bk-opt-arr {
             margin-left: auto;
             font-size: 1rem;
-            color: var(--greyl);
-            transition: transform .2s var(--ease), color .2s;
+            color: rgba(255, 255, 255, .7);
+            transition: transform .2s var(--ease);
             flex-shrink: 0;
             font-weight: 700;
         }
 
         .bk-opt:hover .bk-opt-arr {
-            transform: translateX(6px);
-            color: var(--dark);
+            transform: translateX(5px);
+            color: white;
         }
 
         /* ── Hours grid ── */
         .bk-hours-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
+            gap: 10px;
         }
 
         .bk-hour-item {
             background: var(--pg3);
-            border: 1px solid rgba(61, 122, 61, .12);
-            border-radius: 12px;
-            padding: 12px 14px;
-            transition: background .2s;
+            border: 1px solid rgba(61, 122, 61, .14);
+            border-radius: 14px;
+            padding: 16px 18px;
+            transition: background .2s, border-color .2s, transform .2s;
+            cursor: default;
         }
 
         .bk-hour-item:hover {
             background: var(--pg);
+            border-color: rgba(61, 122, 61, .28);
+            transform: translateY(-1px);
+        }
+
+        .bk-hour-item.bk-hour-sunday {
+            background: rgba(245, 192, 154, .13);
+            border-color: rgba(212, 118, 42, .18);
+        }
+
+        .bk-hour-item.bk-hour-sunday:hover {
+            background: rgba(245, 192, 154, .22);
         }
 
         .bk-hour-item.emergency {
             background: rgba(212, 118, 42, .08);
-            border-color: rgba(212, 118, 42, .2);
+            border-color: rgba(212, 118, 42, .22);
+        }
+
+        .bk-hour-item.emergency:hover {
+            background: rgba(212, 118, 42, .14);
         }
 
         .bk-hour-day {
-            font-size: .58rem;
+            font-size: .6rem;
             text-transform: uppercase;
-            letter-spacing: .1em;
+            letter-spacing: .12em;
             color: var(--grey);
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             font-weight: 600;
         }
 
+        .bk-hour-item.bk-hour-sunday .bk-hour-day,
+        .bk-hour-item.emergency .bk-hour-day {
+            color: var(--po4);
+            opacity: .8;
+        }
+
         .bk-hour-time {
-            font-size: .82rem;
+            font-size: .88rem;
             font-weight: 700;
             color: var(--dark);
+            line-height: 1.3;
+        }
+
+        .bk-hour-item.bk-hour-sunday .bk-hour-time {
+            color: var(--po4);
         }
 
         .bk-hour-item.emergency .bk-hour-time {
@@ -4154,7 +3969,7 @@
 
         .loc-action-row {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             flex-wrap: wrap;
         }
 
@@ -4162,33 +3977,36 @@
             display: inline-flex;
             align-items: center;
             gap: 7px;
-            padding: 9px 15px;
+            padding: 11px 18px;
             border-radius: 30px;
-            font-size: .7rem;
+            font-size: .75rem;
             font-weight: 600;
             background: var(--pg3);
-            border: 1px solid rgba(61, 122, 61, .18);
-            color: var(--dark);
+            border: 1.5px solid rgba(61, 122, 61, .2);
+            color: var(--pg5);
             text-decoration: none;
-            transition: all .2s;
-        }
-
-        .loc-action-btn:first-child {
-            background: rgba(212, 118, 42, .10);
-            border-color: rgba(212, 118, 42, .28);
-            color: var(--po4);
-        }
-
-        .loc-action-btn:first-child:hover {
-            background: rgba(212, 118, 42, .2);
-            border-color: rgba(212, 118, 42, .45);
-            color: var(--dark);
+            transition: all .22s;
+            letter-spacing: .01em;
         }
 
         .loc-action-btn:hover {
             background: var(--pg);
-            border-color: rgba(61, 122, 61, .3);
+            border-color: rgba(61, 122, 61, .38);
             color: var(--dark);
+            transform: translateY(-1px);
+        }
+
+        .loc-action-primary {
+            background: rgba(212, 118, 42, .10);
+            border-color: rgba(212, 118, 42, .32);
+            color: var(--po4);
+        }
+
+        .loc-action-primary:hover {
+            background: rgba(212, 118, 42, .20);
+            border-color: rgba(212, 118, 42, .52);
+            color: var(--dark);
+            transform: translateY(-1px);
         }
 
         /* Hide the old bk-col and loc-col */
@@ -4301,62 +4119,10 @@
             color: var(--dark);
         }
 
-        .bk-submit {
-            width: 100%;
-            background: var(--po4);
-            color: white;
-            padding: 14px;
-            border-radius: 10px;
-            font-size: .85rem;
-            font-weight: 700;
-            letter-spacing: .04em;
-            cursor: pointer;
-        }
+        /* bk-submit defined below in contact section */
 
-        .bk-submit:hover {
-            background: var(--dark);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(212, 118, 42, .25);
-        }
-
+        /* form submit */
         .bk-note {
-            font-size: .67rem;
-            color: var(--greyl);
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        .bk-success {
-            display: none;
-            text-align: center;
-            padding: 32px 0;
-        }
-
-        .bk-success.show {
-            display: block;
-        }
-
-        .bk-success .tick {
-            font-size: 2.8rem;
-            margin-bottom: 12px;
-        }
-
-        .bk-success h4 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.4rem;
-            color: var(--dark);
-            margin-bottom: 8px;
-        }
-
-        .bk-success p {
-            font-size: .8rem;
-            color: var(--grey);
-        }
-
-        /* Location col */
-        .loc-col {}
-
-        .loc-col-title {
             font-size: .68rem;
             letter-spacing: .14em;
             text-transform: uppercase;
@@ -4986,12 +4752,37 @@
 
     <!-- PRELOADER -->
     <div id="preloader">
-        <img src="LOGO2.png" alt="Dental Enclave"
-            style="height:clamp(60px,10vw,100px);width:auto;opacity:0;animation:plFadeIn .6s .2s ease forwards;">
-        <div class="pl-bar-wrap">
-            <div class="pl-bar"></div>
+        <div class="pl-arc-wrap">
+            <!-- Gradient definition -->
+            <svg width="0" height="0" style="position:absolute">
+                <defs>
+                    <linearGradient id="plGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#3d7a3d" stop-opacity="0" />
+                        <stop offset="40%" stop-color="#3d7a3d" />
+                        <stop offset="100%" stop-color="#d4762a" />
+                    </linearGradient>
+                </defs>
+            </svg>
+
+            <!-- Spinning arc -->
+            <svg class="pl-arc-svg" viewBox="0 0 360 360">
+                <circle class="pl-arc-track" cx="180" cy="180" r="162" />
+                <circle class="pl-arc-fill" cx="180" cy="180" r="162" transform="rotate(-90 180 180)" />
+            </svg>
+
+            <!-- Decorative outer ring with accent dots -->
+            <div class="pl-outer-ring"></div>
+
+            <!-- Logo with shimmer -->
+            <div class="pl-img-wrap">
+                <img src="LOGO2.png" alt="Dental Enclave">
+            </div>
         </div>
-        <div class="pl-sub">Dr. Kanchan Koli · 13+ Years · Malad West, Mumbai</div>
+
+        <div class="pl-tagline">
+            <div class="pl-tagline-main">Dental Enclave</div>
+            <div class="pl-tagline-sub">by Dr. Kanchan Koli</div>
+        </div>
     </div>
 
     <!-- BACKDROP -->
@@ -5166,7 +4957,7 @@
                 </div>
             </h1>
             <p class="hero-desc">
-                Where every smile tells a story. Dr. Kanchan Koli brings over 13 years of compassionate, precise care —
+                Where every smile tells a story. Dr. Kanchan Koli brings over 13 years of compassionate, precise care,
                 in a serene, welcoming clinic designed to put you at ease from the moment you walk in.
             </p>
             <div class="hero-btns">
@@ -5226,7 +5017,7 @@
                 <div class="eyebrow">What We Offer</div>
                 <h2 class="sec-title">Everything your<br>smile <em>needs.</em></h2>
             </div>
-            <p class="sec-sub sa up" data-d="2">Comprehensive care for all your dental needs — 8 specialist treatments
+            <p class="sec-sub sa up" data-d="2">Comprehensive care for all your dental needs: 8 specialist treatments
                 under one roof, with transparent pricing and value-for-money care, never at the cost of quality.</p>
         </div>
 
@@ -5272,8 +5063,8 @@
                     <div class="svc-fw-num">02</div>
                     <div class="svc-fw-ico">✨</div>
                     <div class="svc-fw-name">Smile Design</div>
-                    <div class="svc-fw-desc">Custom porcelain veneers and laminates crafted from a digital preview —
-                        what you see is what you get.</div>
+                    <div class="svc-fw-desc">Custom porcelain veneers and laminates crafted from a digital preview. What
+                        you see is what you get.</div>
                     <div class="svc-fw-tags">
                         <span class="svc-fw-tag">Digital Preview</span>
                         <span class="svc-fw-tag">Veneers</span>
@@ -5338,7 +5129,7 @@
                     <div class="svc-fw-num">04</div>
                     <div class="svc-fw-ico">〰️</div>
                     <div class="svc-fw-name">Braces &amp; Invisalign</div>
-                    <div class="svc-fw-desc">Metal braces or nearly-invisible Invisalign aligners — every stage
+                    <div class="svc-fw-desc">Metal braces or nearly-invisible Invisalign aligners,
                         digitally planned so you see the result first.</div>
                     <div class="svc-fw-tags">
                         <span class="svc-fw-tag">Clear Aligners</span>
@@ -5405,7 +5196,7 @@
                     <div class="svc-fw-num">06</div>
                     <div class="svc-fw-ico">💉</div>
                     <div class="svc-fw-name">Root Canal</div>
-                    <div class="svc-fw-desc">Modern painless root canal using rotary instruments — saving your natural
+                    <div class="svc-fw-desc">Modern painless root canal using rotary instruments,
                         tooth in a single visit.</div>
                     <div class="svc-fw-tags">
                         <span class="svc-fw-tag">Single Visit</span>
@@ -5438,7 +5229,7 @@
                     <div class="svc-fw-num">07</div>
                     <div class="svc-fw-ico">👑</div>
                     <div class="svc-fw-name">Crowns &amp; Bridges</div>
-                    <div class="svc-fw-desc">Lab-crafted zirconia crowns colour-matched perfectly — no metal edges, no
+                    <div class="svc-fw-desc">Lab-crafted zirconia crowns colour-matched perfectly,
                         dark gum lines. 10-year guarantee.</div>
                     <div class="svc-fw-tags">
                         <span class="svc-fw-tag">Zirconia</span>
@@ -5520,171 +5311,176 @@
             </div>
         </div>
 
-        <!-- Single-card carousel -->
         <div class="rev-solo-wrap">
-            <div class="rev-solo-stage" id="revSoloStage">
+            <div class="rev-carousel-clip">
+                <div class="rev-solo-stage" id="revSoloStage">
 
-                <div class="rev-card">
-                    <div class="rev-top">
-                        <div class="rev-av" style="background:linear-gradient(135deg,#3d7a3d,#2a5c2a)">R</div>
-                        <div>
-                            <div class="rev-name">Rohan Mehta</div>
-                            <div class="rev-via">Google Review · 2 months ago</div>
+                    <div class="rev-card">
+                        <div class="rev-top">
+                            <div class="rev-av" style="background:linear-gradient(135deg,#3d7a3d,#2a5c2a)">R</div>
+                            <div>
+                                <div class="rev-name">Rohan Mehta</div>
+                                <div class="rev-via">Google Review · 2 months ago</div>
+                            </div>
+                            <div class="rev-stars">★★★★★</div>
                         </div>
-                        <div class="rev-stars">★★★★★</div>
-                    </div>
-                    <p class="rev-text">I avoided dentists for years due to fear. Dr. Kanchan made me feel completely at
-                        ease. Got my implant done, zero pain, and the result is outstanding. Best decision I ever made.
-                    </p>
-                    <div class="rev-footer">
-                        <div class="rev-date">Dental Implants</div>
-                        <div class="rev-g-tag">G</div>
-                    </div>
-                </div>
-
-                <div class="rev-card">
-                    <div class="rev-top">
-                        <div class="rev-av" style="background:linear-gradient(135deg,#e8a05a,#d4802a)">S</div>
-                        <div>
-                            <div class="rev-name">Shruti Kapoor</div>
-                            <div class="rev-via">Google Review · 3 months ago</div>
+                        <p class="rev-text">I avoided dentists for years due to fear. Dr. Kanchan made me feel
+                            completely at ease. Got my implant done, zero pain, and the result is outstanding. Best
+                            decision I ever made.</p>
+                        <div class="rev-footer">
+                            <div class="rev-date">Dental Implants</div>
+                            <div class="rev-g-tag">G</div>
                         </div>
-                        <div class="rev-stars">★★★★★</div>
                     </div>
-                    <p class="rev-text">Best smile makeover I could have asked for. Dr. Koli understood exactly what I
-                        wanted. The veneers look so natural — everyone asks if I always had this smile!</p>
-                    <div class="rev-footer">
-                        <div class="rev-date">Smile Design</div>
-                        <div class="rev-g-tag">G</div>
-                    </div>
-                </div>
 
-                <div class="rev-card">
-                    <div class="rev-top">
-                        <div class="rev-av" style="background:linear-gradient(135deg,#4285F4,#1a5cc4)">A</div>
-                        <div>
-                            <div class="rev-name">Amit Verma</div>
-                            <div class="rev-via">Google Review · 1 month ago</div>
+                    <div class="rev-card">
+                        <div class="rev-top">
+                            <div class="rev-av" style="background:linear-gradient(135deg,#e8a05a,#d4802a)">S</div>
+                            <div>
+                                <div class="rev-name">Shruti Kapoor</div>
+                                <div class="rev-via">Google Review · 3 months ago</div>
+                            </div>
+                            <div class="rev-stars">★★★★★</div>
                         </div>
-                        <div class="rev-stars">★★★★★</div>
-                    </div>
-                    <p class="rev-text">Got my root canal done here. Absolutely painless, incredibly hygienic setup. Dr.
-                        Kanchan explained every step clearly. The whole team is warm and thorough.</p>
-                    <div class="rev-footer">
-                        <div class="rev-date">Root Canal</div>
-                        <div class="rev-g-tag">G</div>
-                    </div>
-                </div>
-
-                <div class="rev-card">
-                    <div class="rev-top">
-                        <div class="rev-av" style="background:linear-gradient(135deg,#9b59b6,#7d3c98)">N</div>
-                        <div>
-                            <div class="rev-name">Neha Sharma</div>
-                            <div class="rev-via">Google Review · 5 months ago</div>
+                        <p class="rev-text">Best smile makeover I could have asked for. Dr. Koli understood exactly what
+                            I wanted. The veneers look so natural, everyone asks if I always had this smile!</p>
+                        <div class="rev-footer">
+                            <div class="rev-date">Smile Design</div>
+                            <div class="rev-g-tag">G</div>
                         </div>
-                        <div class="rev-stars">★★★★★</div>
                     </div>
-                    <p class="rev-text">Took my 8-year-old here for her first dental visit. Dr. Koli is incredible with
-                        kids — so patient and gentle. My daughter actually wants to come back next time!</p>
-                    <div class="rev-footer">
-                        <div class="rev-date">Kids Dentistry</div>
-                        <div class="rev-g-tag">G</div>
-                    </div>
-                </div>
 
-                <div class="rev-card">
-                    <div class="rev-top">
-                        <div class="rev-av" style="background:linear-gradient(135deg,#e74c3c,#c0392b)">V</div>
-                        <div>
-                            <div class="rev-name">Vikram Nair</div>
-                            <div class="rev-via">Google Review · 4 months ago</div>
+                    <div class="rev-card">
+                        <div class="rev-top">
+                            <div class="rev-av" style="background:linear-gradient(135deg,#4285F4,#1a5cc4)">A</div>
+                            <div>
+                                <div class="rev-name">Amit Verma</div>
+                                <div class="rev-via">Google Review · 1 month ago</div>
+                            </div>
+                            <div class="rev-stars">★★★★★</div>
                         </div>
-                        <div class="rev-stars">★★★★★</div>
-                    </div>
-                    <p class="rev-text">My Invisalign journey was smooth from start to finish. Dr. Kanchan monitored
-                        progress at every step. Teeth are perfectly straight now. Truly worth every rupee!</p>
-                    <div class="rev-footer">
-                        <div class="rev-date">Braces &amp; Invisalign</div>
-                        <div class="rev-g-tag">G</div>
-                    </div>
-                </div>
-
-                <div class="rev-card">
-                    <div class="rev-top">
-                        <div class="rev-av" style="background:linear-gradient(135deg,#27ae60,#1e8449)">P</div>
-                        <div>
-                            <div class="rev-name">Pooja Iyer</div>
-                            <div class="rev-via">Google Review · 6 months ago</div>
+                        <p class="rev-text">Got my root canal done here. Absolutely painless, incredibly hygienic setup.
+                            Dr. Kanchan explained every step clearly. The whole team is warm and thorough.</p>
+                        <div class="rev-footer">
+                            <div class="rev-date">Root Canal</div>
+                            <div class="rev-g-tag">G</div>
                         </div>
-                        <div class="rev-stars">★★★★★</div>
                     </div>
-                    <p class="rev-text">Most modern clinic I've visited in all of Mumbai. The technology is advanced,
-                        the environment is spotless, and Dr. Koli is genuinely gifted. My whole family comes here now.
-                    </p>
-                    <div class="rev-footer">
-                        <div class="rev-date">Scaling &amp; Cleaning</div>
-                        <div class="rev-g-tag">G</div>
-                    </div>
-                </div>
 
-                <div class="rev-card">
-                    <div class="rev-top">
-                        <div class="rev-av" style="background:linear-gradient(135deg,#f39c12,#d68910)">M</div>
-                        <div>
-                            <div class="rev-name">Mansi Desai</div>
-                            <div class="rev-via">Google Review · 1 month ago</div>
+                    <div class="rev-card">
+                        <div class="rev-top">
+                            <div class="rev-av" style="background:linear-gradient(135deg,#9b59b6,#7d3c98)">N</div>
+                            <div>
+                                <div class="rev-name">Neha Sharma</div>
+                                <div class="rev-via">Google Review · 5 months ago</div>
+                            </div>
+                            <div class="rev-stars">★★★★★</div>
                         </div>
-                        <div class="rev-stars">★★★★★</div>
-                    </div>
-                    <p class="rev-text">Had been wanting whiter teeth for years. One session at Dental Enclave and I'm
-                        genuinely amazed. Fast, painless, and the results are stunning. 100% recommended!</p>
-                    <div class="rev-footer">
-                        <div class="rev-date">Teeth Whitening</div>
-                        <div class="rev-g-tag">G</div>
-                    </div>
-                </div>
-
-                <div class="rev-card">
-                    <div class="rev-top">
-                        <div class="rev-av" style="background:linear-gradient(135deg,#1abc9c,#148f77)">K</div>
-                        <div>
-                            <div class="rev-name">Karan Bhatia</div>
-                            <div class="rev-via">Google Review · 2 months ago</div>
+                        <p class="rev-text">Took my 8-year-old here for her first dental visit. Dr. Koli is incredible
+                            with kids, so patient and gentle. My daughter actually wants to come back next time!</p>
+                        <div class="rev-footer">
+                            <div class="rev-date">Kids Dentistry</div>
+                            <div class="rev-g-tag">G</div>
                         </div>
-                        <div class="rev-stars">★★★★★</div>
                     </div>
-                    <p class="rev-text">Got a zirconia crown done. Perfect colour match, comfortable fit, completed in
-                        the same week. Dr. Kanchan's attention to detail is exceptional. Highly recommend!</p>
-                    <div class="rev-footer">
-                        <div class="rev-date">Crowns &amp; Bridges</div>
-                        <div class="rev-g-tag">G</div>
-                    </div>
-                </div>
 
-                <div class="rev-card">
-                    <div class="rev-top">
-                        <div class="rev-av" style="background:linear-gradient(135deg,#8e44ad,#6c3483)">R</div>
-                        <div>
-                            <div class="rev-name">Ritu Patel</div>
-                            <div class="rev-via">Google Review · 3 months ago</div>
+                    <div class="rev-card">
+                        <div class="rev-top">
+                            <div class="rev-av" style="background:linear-gradient(135deg,#e74c3c,#c0392b)">V</div>
+                            <div>
+                                <div class="rev-name">Vikram Nair</div>
+                                <div class="rev-via">Google Review · 4 months ago</div>
+                            </div>
+                            <div class="rev-stars">★★★★★</div>
                         </div>
-                        <div class="rev-stars">★★★★★</div>
+                        <p class="rev-text">My Invisalign journey was smooth from start to finish. Dr. Kanchan monitored
+                            progress at every step. Teeth are perfectly straight now. Truly worth every rupee!</p>
+                        <div class="rev-footer">
+                            <div class="rev-date">Braces &amp; Invisalign</div>
+                            <div class="rev-g-tag">G</div>
+                        </div>
                     </div>
-                    <p class="rev-text">Excellent scaling and polishing session. The clinic is immaculate and the staff
-                        is so warm. Dr. Koli takes time to explain everything. Already booked my next visit!</p>
-                    <div class="rev-footer">
-                        <div class="rev-date">Scaling &amp; Cleaning</div>
-                        <div class="rev-g-tag">G</div>
-                    </div>
-                </div>
 
+                    <div class="rev-card">
+                        <div class="rev-top">
+                            <div class="rev-av" style="background:linear-gradient(135deg,#27ae60,#1e8449)">P</div>
+                            <div>
+                                <div class="rev-name">Pooja Iyer</div>
+                                <div class="rev-via">Google Review · 6 months ago</div>
+                            </div>
+                            <div class="rev-stars">★★★★★</div>
+                        </div>
+                        <p class="rev-text">Most modern clinic I've visited in all of Mumbai. The technology is
+                            advanced, the environment is spotless, and Dr. Koli is genuinely gifted. My whole family
+                            comes here now.</p>
+                        <div class="rev-footer">
+                            <div class="rev-date">Scaling &amp; Cleaning</div>
+                            <div class="rev-g-tag">G</div>
+                        </div>
+                    </div>
+
+                    <div class="rev-card">
+                        <div class="rev-top">
+                            <div class="rev-av" style="background:linear-gradient(135deg,#f39c12,#d68910)">M</div>
+                            <div>
+                                <div class="rev-name">Mansi Desai</div>
+                                <div class="rev-via">Google Review · 1 month ago</div>
+                            </div>
+                            <div class="rev-stars">★★★★★</div>
+                        </div>
+                        <p class="rev-text">Had been wanting whiter teeth for years. One session at Dental Enclave and
+                            I'm genuinely amazed. Fast, painless, and the results are stunning. 100% recommended!</p>
+                        <div class="rev-footer">
+                            <div class="rev-date">Teeth Whitening</div>
+                            <div class="rev-g-tag">G</div>
+                        </div>
+                    </div>
+
+                    <div class="rev-card">
+                        <div class="rev-top">
+                            <div class="rev-av" style="background:linear-gradient(135deg,#1abc9c,#148f77)">K</div>
+                            <div>
+                                <div class="rev-name">Karan Bhatia</div>
+                                <div class="rev-via">Google Review · 2 months ago</div>
+                            </div>
+                            <div class="rev-stars">★★★★★</div>
+                        </div>
+                        <p class="rev-text">Got a zirconia crown done. Perfect colour match, comfortable fit, completed
+                            in the same week. Dr. Kanchan's attention to detail is exceptional. Highly recommend!</p>
+                        <div class="rev-footer">
+                            <div class="rev-date">Crowns &amp; Bridges</div>
+                            <div class="rev-g-tag">G</div>
+                        </div>
+                    </div>
+
+                    <div class="rev-card">
+                        <div class="rev-top">
+                            <div class="rev-av" style="background:linear-gradient(135deg,#8e44ad,#6c3483)">R</div>
+                            <div>
+                                <div class="rev-name">Ritu Patel</div>
+                                <div class="rev-via">Google Review · 3 months ago</div>
+                            </div>
+                            <div class="rev-stars">★★★★★</div>
+                        </div>
+                        <p class="rev-text">Excellent scaling and polishing session. The clinic is immaculate and the
+                            staff is so warm. Dr. Koli takes time to explain everything. Already booked my next visit!
+                        </p>
+                        <div class="rev-footer">
+                            <div class="rev-date">Scaling &amp; Cleaning</div>
+                            <div class="rev-g-tag">G</div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
             <div class="rev-solo-controls">
-                <button class="rev-btn" id="revPrev" aria-label="Previous">←</button>
+                <div class="rev-controls-left">
+                    <button class="rev-btn" id="revPrev" aria-label="Previous">←</button>
+                    <button class="rev-btn" id="revNext" aria-label="Next">→</button>
+                </div>
                 <div class="rev-dots" id="revDots"></div>
-                <button class="rev-btn" id="revNext" aria-label="Next">→</button>
+                <span class="rev-counter" id="revCounter">1 / 9</span>
             </div>
         </div>
     </section>
@@ -5696,7 +5492,7 @@
                 <div class="eyebrow">Inside Dental Enclave</div>
                 <h2 class="sec-title">Our <em>Clinic</em></h2>
                 <p class="sec-sub" style="max-width:560px;margin-top:16px;">A peaceful, serene space designed to make
-                    you feel instantly at ease — equipped with state-of-the-art technology, a digital workflow system,
+                    you feel instantly at ease, equipped with state-of-the-art technology, a digital workflow system,
                     and ample parking right in the heart of Malad.</p>
             </div>
             <a href="#contact" class="btn btn-g sa up" data-d="3">Schedule a Tour →</a>
@@ -5746,7 +5542,7 @@
         <!-- LEFT: Full-bleed photo column -->
         <div class="doc-img-wrap sa left">
             <div class="doc-img-frame">
-                <img loading="lazy" src="KANCHANKOLI.JPG" alt="Dr. Kanchan Koli — BDS Implantologist Malad West Mumbai">
+                <img loading="lazy" src="KANCHANKOLI.JPG" alt="Dr. Kanchan Koli BDS Implantologist Malad West Mumbai">
             </div>
 
             <!-- Stat cards overlaid on photo -->
@@ -5768,7 +5564,7 @@
             <!-- Floating philosophy quote -->
             <div class="doc-quote-card">
                 <div class="doc-quote-text">"Every patient deserves to feel like family."</div>
-                <div class="doc-quote-author">— Dr. Kanchan Koli</div>
+                <div class="doc-quote-author"> Dr. Kanchan Koli</div>
             </div>
         </div>
 
@@ -5780,7 +5576,7 @@
                 13+ Years</div>
 
             <p class="doc-bio">With over 13 years of experience, Dr. Kanchan Koli is known for her gentle approach and
-                meticulous attention to detail. She attends to every patient with compassion — taking the time to
+                meticulous attention to detail. She attends to every patient with compassion, taking the time to
                 understand their concerns, explain each step of treatment, and ensure complete comfort throughout.</p>
 
             <!-- 2-col credentials grid -->
@@ -5793,9 +5589,6 @@
                 </div>
                 <div class="dq-item">
                     <div class="dq-icon">✨</div>Smile Design &amp; Aesthetic Dentistry Diploma
-                </div>
-                <div class="dq-item">
-                    <div class="dq-icon">👶</div>Certified Paediatric Dentistry Practitioner
                 </div>
             </div>
 
@@ -5826,7 +5619,7 @@
         <div class="contact-head sa up">
             <div class="eyebrow">Book &amp; Visit</div>
             <h2 class="sec-title">Ready for your <em>new smile?</em></h2>
-            <p class="sec-sub">Book online, call us, or walk in — Monday through Saturday, 10 AM to 7 PM. Sundays by
+            <p class="sec-sub">Book online, call us, or walk in. Monday through Saturday, 10 AM to 7 PM. Sundays by
                 prior appointment only. Emergencies welcome. Your comfort and convenience are always our priority.</p>
         </div>
         <div class="contact-grid">
@@ -5918,7 +5711,7 @@
                             target="_blank" class="bk-opt bk-opt-wa">
                             <div class="bk-opt-ico">
                                 <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
-                                    style="width:22px;height:22px;fill:#25D366">
+                                    style="width:22px;height:22px;fill:white">
                                     <path
                                         d="M16 3C9.373 3 4 8.373 4 15c0 2.385.832 4.584 2.214 6.337L4.5 28l6.81-1.698A11.937 11.937 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16 3zm-2.39 8.25c-.222 0-.58.083-.884.41-.303.327-1.158 1.132-1.158 2.76 0 1.63 1.185 3.204 1.35 3.426.166.222 2.317 3.54 5.62 4.82.785.307 1.396.49 1.873.627.787.228 1.504.196 2.07.119.632-.086 1.946-.796 2.221-1.564.276-.768.276-1.428.193-1.565-.083-.138-.304-.222-.637-.388-.332-.166-1.967-.97-2.271-1.08-.304-.11-.525-.166-.747.166-.222.332-.858 1.08-1.052 1.302-.194.222-.39.25-.72.084-.332-.166-1.401-.517-2.669-1.647-.986-.88-1.65-1.966-1.843-2.298-.194-.332-.02-.512.145-.678.15-.15.332-.39.498-.582.166-.194.222-.332.332-.554.111-.222.055-.416-.028-.582-.083-.166-.746-1.797-1.022-2.461-.27-.647-.545-.56-.747-.57a13.62 13.62 0 0 0-.637-.01z" />
                                 </svg>
@@ -5935,7 +5728,7 @@
                             class="bk-opt bk-opt-practo">
                             <div class="bk-opt-ico">
                                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                                    style="width:20px;height:20px;fill:var(--po4)">
+                                    style="width:20px;height:20px;fill:white">
                                     <path
                                         d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" />
                                 </svg>
@@ -5951,14 +5744,15 @@
                         <a href="tel:9167310997" class="bk-opt bk-opt-call">
                             <div class="bk-opt-ico">
                                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                                    style="width:20px;height:20px;fill:#64a0ff">
+                                    style="width:20px;height:20px;fill:white">
                                     <path
                                         d="M6.62 10.79a15.053 15.053 0 0 0 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
                                 </svg>
                             </div>
                             <div class="bk-opt-body">
                                 <div class="bk-opt-title">9167310997 / 9819681939</div>
-                                <div class="bk-opt-sub">Mon – Sat, 10 AM – 7 PM · Sun by appt</div>
+                                <div class="bk-opt-sub">Mon – Sat 10 AM – 7 PM · Sun pre-book · Emergencies anytime
+                                </div>
                             </div>
                             <div class="bk-opt-arr">→</div>
                         </a>
@@ -5971,20 +5765,16 @@
                     <div class="bk-info-section-title">Clinic Hours</div>
                     <div class="bk-hours-grid">
                         <div class="bk-hour-item">
-                            <div class="bk-hour-day">Mon – Fri</div>
-                            <div class="bk-hour-time">10 AM – 7 PM</div>
-                        </div>
-                        <div class="bk-hour-item">
-                            <div class="bk-hour-day">Saturday</div>
+                            <div class="bk-hour-day">Mon – Sat</div>
                             <div class="bk-hour-time">10 AM – 7 PM</div>
                         </div>
                         <div class="bk-hour-item bk-hour-sunday">
                             <div class="bk-hour-day">Sunday</div>
-                            <div class="bk-hour-time">By Appointment Only</div>
+                            <div class="bk-hour-time">Pre-book Required</div>
                         </div>
-                        <div class="bk-hour-item emergency">
+                        <div class="bk-hour-item emergency" style="grid-column: 1 / -1;">
                             <div class="bk-hour-day">🚨 Emergencies</div>
-                            <div class="bk-hour-time">Call Anytime</div>
+                            <div class="bk-hour-time">Always Open, Call Anytime</div>
                         </div>
                     </div>
                 </div>
@@ -6003,12 +5793,10 @@
                         Malad West, Mumbai – 400064
                     </div>
                     <div class="loc-action-row">
-                        <a href="https://maps.google.com/?q=Dental+Enclave+One+World+SV+Road+Malad+West+Mumbai"
-                            target="_blank" class="loc-action-btn">📍 Get Directions</a>
-                        <a href="mailto:dentalenclavemumbai@gmail.com" class="loc-action-btn">✉️ Email</a>
+                        <a href="https://www.google.com/maps/place/Dental+Enclave+By+Dr.+Kanchan+Koli/@19.1934743,72.8448239,17z/data=!3m1!4b1!4m6!3m5!1s0x3be7b7c0ce7cf70f:0xa97f88458dfab118!8m2!3d19.1934743!4d72.8474!16s%2Fg%2F11t_5m9yd3"
+                            target="_blank" class="loc-action-btn loc-action-primary">📍 Get Directions</a>
                         <a href="https://www.instagram.com/dentalenclave_drkanchankoli/" target="_blank"
-                            class="loc-action-btn">📷
-                            Instagram</a>
+                            class="loc-action-btn">📷 Instagram</a>
                     </div>
                 </div>
 
@@ -6173,14 +5961,14 @@
 
         /* ── SERVICES DATA & DETAIL CARD ── */
         const svcData = [
-            { name: 'Teeth Whitening', ico: '🦷', num: '01', desc: 'Professional in-clinic whitening removes years of staining in a single 60-minute session. We use medical-grade bleaching agents that deliver brilliant, natural-looking results lasting up to 2 years — far superior to any at-home kit.', problems: ['Stained or yellowed teeth', 'Coffee & tea discolouration', 'Dull smile affecting confidence', 'Surface stains from food'], steps: ['Dental assessment & shade mapping', 'Custom gel tray application (20 min)', 'LED light activation for deep lift', 'Final shade check & aftercare advice'], tags: ['Single Session', '60 Minutes', 'Painless', 'Lasts 2 Years'], cta: 'Book Whitening →' },
-            { name: 'Smile Design', ico: '✨', num: '02', desc: 'Custom porcelain veneers, composite bonding and laminates crafted to create your perfect smile. Dr. Koli digitally previews your transformation before touching a tooth — what you see is exactly what you\'ll get.', problems: ['Chipped or uneven teeth', 'Gaps between front teeth', 'Smile you feel self-conscious about', 'Discoloured front teeth'], steps: ['Digital smile preview & design', 'Minimal tooth preparation', 'Custom veneer/bonding fabrication', 'Precision bonding & final polish'], tags: ['Digital Preview', 'Porcelain Veneers', 'Composite Bonding', 'Natural Look'], cta: 'Design My Smile →' },
-            { name: 'Dental Implants', ico: '🔩', num: '03', desc: 'Permanent titanium implants that look, feel and function exactly like your natural teeth. Dr. Koli has placed 1,000+ implants over 14 years. The titanium root fuses with your jawbone — a lifetime solution with zero maintenance.', problems: ['Missing teeth (one or more)', 'Loose or failing dentures', 'Bone loss from missing teeth', 'Difficulty eating or speaking'], steps: ['3D scan & implant planning', 'Titanium post placement (1 hr)', 'Osseointegration healing (6–12 wks)', 'Permanent crown placement'], tags: ['Lifetime Solution', 'Titanium Root', 'Same-Day Crowns', '1000+ Placed'], cta: 'Get Implant Consult →' },
-            { name: 'Braces & Invisalign', ico: '〰️', num: '04', desc: 'Metal braces or clear Invisalign aligners — we offer both to suit your lifestyle. Invisalign is nearly invisible and removable. Dr. Koli plans every stage digitally so you see your final result before starting treatment.', problems: ['Crooked or misaligned teeth', 'Overcrowding', 'Overbite / underbite', 'Gaps between teeth'], steps: ['Digital teeth scanning & simulation', 'Brace/aligner fitting & activation', 'Monthly progress check-ins', 'Retainer fitting for lasting results'], tags: ['Metal Braces', 'Clear Aligners', 'Digital Planning', 'All Ages'], cta: 'Start Your Journey →' },
+            { name: 'Teeth Whitening', ico: '🦷', num: '01', desc: 'Professional in-clinic whitening removes years of staining in a single 60-minute session. We use medical-grade bleaching agents that deliver brilliant, natural-looking results lasting up to 2 years, far superior to any at-home kit.', problems: ['Stained or yellowed teeth', 'Coffee & tea discolouration', 'Dull smile affecting confidence', 'Surface stains from food'], steps: ['Dental assessment & shade mapping', 'Custom gel tray application (20 min)', 'LED light activation for deep lift', 'Final shade check & aftercare advice'], tags: ['Single Session', '60 Minutes', 'Painless', 'Lasts 2 Years'], cta: 'Book Whitening →' },
+            { name: 'Smile Design', ico: '✨', num: '02', desc: 'Custom porcelain veneers, composite bonding and laminates crafted to create your perfect smile. Dr. Koli digitally previews your transformation before touching a tooth. What you see is exactly what you\'ll get.', problems: ['Chipped or uneven teeth', 'Gaps between front teeth', 'Smile you feel self-conscious about', 'Discoloured front teeth'], steps: ['Digital smile preview & design', 'Minimal tooth preparation', 'Custom veneer/bonding fabrication', 'Precision bonding & final polish'], tags: ['Digital Preview', 'Porcelain Veneers', 'Composite Bonding', 'Natural Look'], cta: 'Design My Smile →' },
+            { name: 'Dental Implants', ico: '🔩', num: '03', desc: 'Permanent titanium implants that look, feel and function exactly like your natural teeth. Dr. Koli has placed 1,000+ implants over 14 years. The titanium root fuses with your jawbone, a lifetime solution with zero maintenance.', problems: ['Missing teeth (one or more)', 'Loose or failing dentures', 'Bone loss from missing teeth', 'Difficulty eating or speaking'], steps: ['3D scan & implant planning', 'Titanium post placement (1 hr)', 'Osseointegration healing (6–12 wks)', 'Permanent crown placement'], tags: ['Lifetime Solution', 'Titanium Root', 'Same-Day Crowns', '1000+ Placed'], cta: 'Get Implant Consult →' },
+            { name: 'Braces & Invisalign', ico: '〰️', num: '04', desc: 'Metal braces or clear Invisalign aligners. We offer both to suit your lifestyle. Invisalign is nearly invisible and removable. Dr. Koli plans every stage digitally so you see your final result before starting treatment.', problems: ['Crooked or misaligned teeth', 'Overcrowding', 'Overbite / underbite', 'Gaps between teeth'], steps: ['Digital teeth scanning & simulation', 'Brace/aligner fitting & activation', 'Monthly progress check-ins', 'Retainer fitting for lasting results'], tags: ['Metal Braces', 'Clear Aligners', 'Digital Planning', 'All Ages'], cta: 'Start Your Journey →' },
             { name: 'Scaling & Cleaning', ico: '🪥', num: '05', desc: 'Deep ultrasonic scaling removes years of hardened plaque and tartar below the gumline. We follow up with polishing that leaves teeth feeling squeaky clean. Recommended every 6 months to prevent gum disease and tooth loss.', problems: ['Plaque & tartar buildup', 'Bleeding or swollen gums', 'Bad breath (halitosis)', 'Early gum disease (gingivitis)'], steps: ['Plaque & tartar assessment', 'Ultrasonic scaling (above & below gumline)', 'Hand scaling for precision areas', 'Polish & fluoride application'], tags: ['Ultrasonic Scaling', 'Polish Finish', '30 Minutes', 'Gum Protection'], cta: 'Book a Cleaning →' },
-            { name: 'Root Canal', ico: '💉', num: '06', desc: 'Modern painless root canal using rotary instruments and advanced anaesthesia. The infected pulp is removed, cleaned and sealed in a single visit — saving your natural tooth. Most patients are surprised by how comfortable the procedure is.', problems: ['Severe toothache', 'Infected tooth pulp', 'Cracked tooth with nerve pain', 'Swelling around tooth'], steps: ['X-ray diagnosis & anaesthesia', 'Pulp chamber access & removal', 'Canal shaping with rotary files', 'Sealing with gutta-percha & crown'], tags: ['Single Visit', 'Rotary Instruments', 'Zero Pain', 'Saves Natural Tooth'], cta: 'Emergency Booking →' },
-            { name: 'Crowns & Bridges', ico: '👑', num: '07', desc: 'Durable ceramic crowns and bridges that restore damaged or missing teeth to full function and natural aesthetics. Our lab-crafted zirconia crowns match your tooth colour perfectly — no metal edges, no dark gum lines.', problems: ['Severely damaged or broken tooth', 'After root canal protection', 'Missing teeth (bridgework)', 'Cracked molar'], steps: ['Tooth preparation & shade matching', 'Digital impression for lab fabrication', 'Temporary crown placement', 'Permanent zirconia crown cementation'], tags: ['Zirconia Ceramic', 'Colour Matched', '10-Year Guarantee', 'Same-Week Fit'], cta: 'Crown Consultation →' },
-            { name: 'Kids Dentistry', ico: '👶', num: '08', desc: 'Gentle, fun dental care for children from their very first visit. Dr. Koli has a special way with kids — calm, playful, and patient. We build trust so children grow up loving their dental checkups rather than fearing them.', problems: ['Child\'s first dental visit', 'Milk tooth cavities', 'Dental anxiety in kids', 'Preventive sealants & fluoride'], steps: ['Fun introductory "show & tell" visit', 'Gentle examination & cleaning', 'Fissure sealants & fluoride varnish', 'Parent guidance on home care'], tags: ['Child-Friendly', 'Anxiety-Free', 'Sealants', 'Age 2+'], cta: 'Book Kids Visit →' }
+            { name: 'Root Canal', ico: '💉', num: '06', desc: 'Modern painless root canal using rotary instruments and advanced anaesthesia. The infected pulp is removed, cleaned and sealed in a single visit, saving your natural tooth. Most patients are surprised by how comfortable the procedure is.', problems: ['Severe toothache', 'Infected tooth pulp', 'Cracked tooth with nerve pain', 'Swelling around tooth'], steps: ['X-ray diagnosis & anaesthesia', 'Pulp chamber access & removal', 'Canal shaping with rotary files', 'Sealing with gutta-percha & crown'], tags: ['Single Visit', 'Rotary Instruments', 'Zero Pain', 'Saves Natural Tooth'], cta: 'Emergency Booking →' },
+            { name: 'Crowns & Bridges', ico: '👑', num: '07', desc: 'Durable ceramic crowns and bridges that restore damaged or missing teeth to full function and natural aesthetics. Our lab-crafted zirconia crowns match your tooth colour perfectly, no metal edges, no dark gum lines.', problems: ['Severely damaged or broken tooth', 'After root canal protection', 'Missing teeth (bridgework)', 'Cracked molar'], steps: ['Tooth preparation & shade matching', 'Digital impression for lab fabrication', 'Temporary crown placement', 'Permanent zirconia crown cementation'], tags: ['Zirconia Ceramic', 'Colour Matched', '10-Year Guarantee', 'Same-Week Fit'], cta: 'Crown Consultation →' },
+            { name: 'Kids Dentistry', ico: '👶', num: '08', desc: 'Gentle, fun dental care for children from their very first visit. Dr. Koli has a special way with kids: calm, playful, and patient. We build trust so children grow up loving their dental checkups rather than fearing them.', problems: ['Child\'s first dental visit', 'Milk tooth cavities', 'Dental anxiety in kids', 'Preventive sealants & fluoride'], steps: ['Fun introductory "show & tell" visit', 'Gentle examination & cleaning', 'Fissure sealants & fluoride varnish', 'Parent guidance on home care'], tags: ['Child-Friendly', 'Anxiety-Free', 'Sealants', 'Age 2+'], cta: 'Book Kids Visit →' }
         ];
 
         let activeSvcIdx = 0;
@@ -6283,10 +6071,12 @@
             const dotsWrap = document.getElementById('revDots');
             const prevBtn = document.getElementById('revPrev');
             const nextBtn = document.getElementById('revNext');
+            const counter = document.getElementById('revCounter');
             if (!stage || !dotsWrap || !prevBtn || !nextBtn) return;
 
             const cards = Array.from(stage.querySelectorAll('.rev-card'));
             let current = 0;
+            let animating = false;
             let autoTimer = null;
 
             // Build dots
@@ -6300,33 +6090,75 @@
 
             function getDots() { return Array.from(dotsWrap.querySelectorAll('.rev-dot')); }
 
-            function goTo(n) {
-                cards[current].classList.remove('active');
-                getDots()[current].classList.remove('active');
+            function updateCounter(n) {
+                if (counter) counter.textContent = (n + 1) + ' / ' + cards.length;
+            }
+
+            function goTo(n, dir) {
+                if (animating || n === current) return;
+                animating = true;
+                const prev = current;
                 current = (n + cards.length) % cards.length;
+
+                // Determine slide direction
+                const forward = dir !== undefined ? dir > 0 : (current > prev || (prev === cards.length - 1 && current === 0));
+
+                // Set incoming card starting position
+                cards[current].style.transition = 'none';
+                cards[current].style.transform = forward ? 'translateX(32px)' : 'translateX(-32px)';
+                cards[current].style.opacity = '0';
                 cards[current].classList.add('active');
+
+                // Force reflow
+                void cards[current].offsetWidth;
+
+                // Animate in incoming
+                cards[current].style.transition = '';
+                cards[current].style.transform = 'translateX(0)';
+                cards[current].style.opacity = '1';
+
+                // Animate out outgoing
+                cards[prev].style.transform = forward ? 'translateX(-32px)' : 'translateX(32px)';
+                cards[prev].style.opacity = '0';
+
+                // Update dots & counter
+                getDots()[prev].classList.remove('active');
                 getDots()[current].classList.add('active');
+                updateCounter(current);
+
+                setTimeout(() => {
+                    cards[prev].classList.remove('active');
+                    cards[prev].style.transform = '';
+                    cards[prev].style.opacity = '';
+                    cards[prev].style.transition = '';
+                    cards[current].style.transform = '';
+                    cards[current].style.opacity = '';
+                    cards[current].style.transition = '';
+                    animating = false;
+                }, 460);
+
                 resetAuto();
             }
 
             function resetAuto() {
                 clearInterval(autoTimer);
-                autoTimer = setInterval(() => goTo(current + 1), 5000);
+                autoTimer = setInterval(() => goTo(current + 1, 1), 5000);
             }
 
-            prevBtn.addEventListener('click', () => goTo(current - 1));
-            nextBtn.addEventListener('click', () => goTo(current + 1));
+            prevBtn.addEventListener('click', () => goTo(current - 1, -1));
+            nextBtn.addEventListener('click', () => goTo(current + 1, 1));
 
             // Touch/swipe support
             let touchStartX = 0;
             stage.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
             stage.addEventListener('touchend', e => {
                 const dx = e.changedTouches[0].clientX - touchStartX;
-                if (Math.abs(dx) > 40) goTo(dx < 0 ? current + 1 : current - 1);
+                if (Math.abs(dx) > 40) goTo(dx < 0 ? current + 1 : current - 1, dx < 0 ? 1 : -1);
             }, { passive: true });
 
             // Initialise
             cards[0].classList.add('active');
+            updateCounter(0);
             resetAuto();
         })();
 
